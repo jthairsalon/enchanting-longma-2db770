@@ -2185,11 +2185,12 @@
         document.getElementById('bookingConfirm').style.display = 'block';
       }
 
-      // 1) Email notification to stylist via EmailJS
-      emailjs.send('service_augfpwt', 'template_nwr1o4v', bookingData).then((response) => { console.log('SUCCESS!', response.status, response.text); }, (error) => { console.log('FAILED...', error); },);
-
-
-
+      // 1) Email notification via EmailJS — wrapped so it never blocks SMS
+      try {
+        emailjs.send('service_augfpwt', 'template_nwr1o4v', bookingData)
+          .then(r => console.log('Email sent:', r.status))
+          .catch(err => console.log('Email failed:', err));
+      } catch(err) { console.log('EmailJS error:', err); }
 
 
 
