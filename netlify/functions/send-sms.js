@@ -51,7 +51,7 @@ exports.handler = async (event) => {
           Authorization: `Basic ${auth}`,
           'Content-Type': 'application/x-www-form-urlencoded'
         },
-        body: new URLSearchParams({ To: toNumber, From: fromNumber, Body: message })
+        body: new URLSearchParams({ To: toNumber, MessagingServiceSid: 'MGa82728e3782d91632c8be204f0cecc4b', Body: message })
       }
     );
 
