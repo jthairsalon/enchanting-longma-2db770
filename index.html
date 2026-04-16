@@ -21,43 +21,100 @@
     html { scroll-behavior: smooth; }
     body { font-family: 'Jost', sans-serif; background: var(--white); color: var(--black); overflow-x: hidden; }
 
-    /* ── NAV ── */
-    nav {
+    /* ── SPLIT HERO ── */
+    .split-hero {
+      height: 100vh; display: flex; overflow: hidden;
+    }
+    .split-sidebar {
+      width: 300px; min-width: 260px; background: var(--white);
+      display: flex; flex-direction: column;
+      padding: 52px 44px 44px; position: relative; z-index: 10;
+      flex-shrink: 0; border-right: 1px solid var(--beige2);
+    }
+    .logo-jt {
+      display: flex; align-items: flex-end; gap: 0; line-height: .88; margin-bottom: 10px;
+    }
+    .logo-j, .logo-t {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 5.5rem; font-weight: 300; color: var(--black);
+      line-height: .88; letter-spacing: -.04em;
+    }
+    .logo-name {
+      font-size: .65rem; letter-spacing: .38em; text-transform: uppercase;
+      color: var(--black); margin-top: 10px; font-weight: 400;
+    }
+    .logo-tagline {
+      font-size: .54rem; letter-spacing: .18em; text-transform: uppercase;
+      color: #bbb; margin-top: 5px; font-weight: 300;
+    }
+    .split-nav {
+      display: flex; flex-direction: column; gap: 22px;
+      margin: auto 0; padding: 52px 0;
+    }
+    .split-nav a {
+      font-size: .71rem; letter-spacing: .24em; text-transform: uppercase;
+      color: var(--charcoal); text-decoration: none;
+      transition: color .3s, letter-spacing .3s; font-weight: 400;
+    }
+    .split-nav a:hover { color: var(--green); letter-spacing: .3em; }
+    .split-address {
+      font-size: .71rem; line-height: 1.8; color: #bbb;
+      font-weight: 300; font-style: normal;
+    }
+    .split-address a { color: #bbb; text-decoration: none; }
+    .split-address a:hover { color: var(--green); }
+    .split-photo { flex: 1; position: relative; overflow: hidden; }
+    .split-img {
+      width: 100%; height: 100%; object-fit: cover;
+      display: block; transition: transform 8s ease;
+    }
+    .split-hero:hover .split-img { transform: scale(1.03); }
+    .split-text {
+      position: absolute; bottom: 52px; left: 52px; right: 52px;
+    }
+    .split-eyebrow {
+      font-size: .6rem; letter-spacing: .35em; text-transform: uppercase;
+      color: rgba(255,255,255,.6); margin-bottom: 14px;
+      font-family: 'Jost', sans-serif; font-weight: 300;
+    }
+    .split-headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.4rem,4.5vw,4.4rem); font-weight: 300;
+      color: white; line-height: 1.08; font-style: italic;
+    }
+
+    /* ── STICKY NAV (slides in on scroll) ── */
+    .sticky-nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 200;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 24px 48px; transition: background .4s, padding .4s;
+      padding: 16px 48px;
+      background: rgba(250,250,248,.97); backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--beige2);
+      transform: translateY(-100%); transition: transform .4s ease;
     }
-    nav.scrolled {
-      background: rgba(250,250,248,.96); backdrop-filter: blur(14px);
-      padding: 16px 48px; border-bottom: 1px solid var(--beige2);
+    .sticky-nav.visible { transform: translateY(0); }
+    .sticky-logo {
+      font-family: 'Cormorant Garamond', serif; font-size: 1.3rem;
+      font-weight: 300; letter-spacing: .18em; color: var(--black); text-decoration: none;
     }
-    .nav-logo {
-      font-family: 'Cormorant Garamond', serif; font-size: 1.5rem;
-      font-weight: 300; letter-spacing: .18em; color: var(--white);
-      text-decoration: none; transition: color .3s;
-    }
-    nav.scrolled .nav-logo { color: var(--black); }
-    .nav-links { display: flex; gap: 32px; list-style: none; align-items: center; }
-    .nav-links a {
+    .sticky-links { display: flex; gap: 28px; list-style: none; align-items: center; }
+    .sticky-links a {
       font-size: .72rem; letter-spacing: .18em; text-transform: uppercase;
-      color: rgba(255,255,255,.85); text-decoration: none; transition: color .3s;
+      color: var(--charcoal); text-decoration: none; transition: color .3s;
     }
-    nav.scrolled .nav-links a { color: var(--charcoal); }
-    .nav-links a:hover { color: var(--green-lt) !important; }
-    .nav-book-btn {
+    .sticky-links a:hover { color: var(--green); }
+    .sticky-cta {
       padding: 9px 22px !important; background: var(--green) !important;
-      color: var(--white) !important; border: 1.5px solid var(--green);
-      transition: background .3s !important;
+      color: var(--white) !important; transition: background .3s !important;
     }
-    .nav-book-btn:hover { background: var(--green-lt) !important; }
-
-    /* Mobile nav */
+    .sticky-cta:hover { background: var(--green-lt) !important; }
     .nav-hamburger {
-      display: none; background: none; border: none; cursor: pointer; padding: 4px;
-      flex-direction: column; gap: 5px;
+      display: none; background: none; border: none; cursor: pointer;
+      padding: 4px; flex-direction: column; gap: 5px;
     }
-    .nav-hamburger span { display: block; width: 24px; height: 1.5px; background: var(--white); transition: background .3s; }
-    nav.scrolled .nav-hamburger span { background: var(--black); }
+    .nav-hamburger span { display: block; width: 24px; height: 1.5px; background: var(--black); }
+
+    /* Mobile menu */
     .mobile-menu {
       display: none; position: fixed; inset: 0; background: var(--black); z-index: 300;
       flex-direction: column; align-items: center; justify-content: center; gap: 36px;
@@ -72,36 +129,14 @@
       position: absolute; top: 28px; right: 36px; background: none; border: none;
       color: var(--white); font-size: 2rem; cursor: pointer; line-height: 1;
     }
+    .mobile-fab {
+      display: none; position: fixed; top: 18px; right: 20px; z-index: 210;
+      background: var(--white); border: 1px solid var(--beige2);
+      padding: 10px 12px; cursor: pointer; flex-direction: column; gap: 5px;
+    }
+    .mobile-fab span { display: block; width: 22px; height: 1.5px; background: var(--black); }
 
-    /* ── HERO ── */
-    .hero {
-      height: 100vh; position: relative; display: flex;
-      align-items: center; justify-content: center; overflow: hidden;
-    }
-    .hero-bg {
-      position: absolute; inset: 0;
-      background: url('images/hero.jpg') center/cover no-repeat;
-      transform: scale(1.06); transition: transform 1.4s ease; filter: brightness(.65);
-    }
-    .hero-bg.loaded { transform: scale(1); }
-    .hero-overlay {
-      position: absolute; inset: 0;
-      background: linear-gradient(to bottom, rgba(21,21,19,.35) 0%, rgba(21,21,19,.18) 50%, rgba(21,21,19,.55) 100%);
-    }
-    .hero-content {
-      position: relative; text-align: center; padding: 0 24px; max-width: 800px;
-    }
-    .hero-eyebrow { font-size: .68rem; letter-spacing: .32em; text-transform: uppercase; color: var(--green-lt); margin-bottom: 20px; }
-    .hero-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(3.8rem,9vw,8rem); font-weight: 300; line-height: .92; color: var(--white);
-    }
-    .hero-title em { font-style: italic; font-weight: 300; }
-    .hero-sub {
-      font-size: .78rem; letter-spacing: .22em; text-transform: uppercase;
-      color: rgba(255,255,255,.6); margin: 28px auto 0; font-weight: 200;
-    }
-    .hero-cta { margin-top: 44px; display: inline-flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+    /* ── SHARED BUTTONS ── */
     .btn {
       display: inline-block; padding: 15px 38px; font-size: .72rem;
       letter-spacing: .18em; text-transform: uppercase; text-decoration: none;
@@ -117,17 +152,6 @@
     .btn-outline:hover { border-color: var(--white); background: rgba(255,255,255,.08); }
     .btn-dark { background: var(--black); color: var(--white); }
     .btn-dark:hover { background: var(--green); }
-    .hero-scroll {
-      position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
-      display: flex; flex-direction: column; align-items: center; gap: 10px;
-    }
-    .hero-scroll span { font-size: .6rem; letter-spacing: .22em; text-transform: uppercase; color: rgba(255,255,255,.5); }
-    .scroll-line {
-      width: 1px; height: 48px;
-      background: linear-gradient(to bottom, rgba(255,255,255,.5), transparent);
-      animation: scrollPulse 2s ease-in-out infinite;
-    }
-    @keyframes scrollPulse { 0%,100%{opacity:.3}50%{opacity:1} }
 
     /* ── INTRO STRIP ── */
     .intro-strip {
@@ -393,10 +417,21 @@
 
     /* ── RESPONSIVE ── */
     @media (max-width: 900px) {
-      nav { padding: 20px 24px; }
-      nav.scrolled { padding: 14px 24px; }
-      .nav-links { display: none; }
+      .split-hero { flex-direction: column; }
+      .split-sidebar {
+        width: 100%; min-width: 0; flex-direction: row;
+        align-items: center; padding: 20px 24px; height: auto;
+        border-right: none; border-bottom: 1px solid var(--beige2);
+        justify-content: space-between;
+      }
+      .split-nav, .split-address { display: none; }
+      .split-photo { flex: 1; min-height: 70vh; }
+      .split-text { bottom: 28px; left: 24px; right: 24px; }
+      .split-headline { font-size: clamp(2rem,7vw,3rem); }
+      .sticky-nav { padding: 14px 24px; }
+      .sticky-links { display: none; }
       .nav-hamburger { display: flex; }
+      .mobile-fab { display: flex; }
       section { padding: 72px 24px; }
       .about-inner, .contact-inner { grid-template-columns: 1fr; gap: 48px; }
       .about-img-wrap { height: 430px; }
@@ -421,7 +456,7 @@
 </head>
 <body>
 
-<!-- MOBILE MENU -->
+<!-- MOBILE MENU OVERLAY -->
 <div class="mobile-menu" id="mobileMenu">
   <button class="mobile-close" id="mobileClose" aria-label="Close menu">×</button>
   <a href="#about" onclick="closeMobile()">About</a>
@@ -432,38 +467,63 @@
   <a href="#opportunities" onclick="closeMobile()">Opportunities</a>
 </div>
 
-<!-- NAV -->
-<nav id="mainNav" class="scrolled">
-  <a href="#" class="nav-logo">JT Hair Salon</a>
-  <ul class="nav-links">
-    <li><a href="#about">About</a></li>
+<!-- MOBILE HAMBURGER FAB -->
+<button class="mobile-fab" id="mobileFab" aria-label="Open menu">
+  <span></span><span></span><span></span>
+</button>
+
+<!-- STICKY NAV (slides in after scrolling past hero) -->
+<nav class="sticky-nav" id="stickyNav">
+  <a href="#" class="sticky-logo">JT Hair Salon</a>
+  <ul class="sticky-links">
     <li><a href="#services">Services</a></li>
     <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#about">About</a></li>
     <li><a href="#booking">Book</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#opportunities">Opportunities</a></li>
-    <li><a href="#booking" class="nav-book-btn">Book Now</a></li>
+    <li><a href="#booking" class="sticky-cta">Book Now</a></li>
   </ul>
   <button class="nav-hamburger" id="hamburger" aria-label="Open menu">
     <span></span><span></span><span></span>
   </button>
 </nav>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-bg loaded" id="heroBg"></div>
-  <div class="hero-overlay"></div>
-  <div class="hero-content">
-    <p class="hero-eyebrow">Torrance, California</p>
-    <h1 class="hero-title">JT <em>Hair</em><br>Salon</h1>
-    <p class="hero-sub">Where every visit is a transformation</p>
-    <div class="hero-cta">
-      <a href="#booking" class="btn btn-primary">Book Appointment</a>
-      <a href="#services" class="btn btn-outline">Our Services</a>
+<!-- SPLIT HERO -->
+<div class="split-hero" id="splitHero">
+
+  <!-- LEFT SIDEBAR: Logo + Nav -->
+  <aside class="split-sidebar">
+    <div class="split-logo">
+      <div class="logo-jt"><span class="logo-j">J</span><span class="logo-t">T</span></div>
+      <div class="logo-name">Hair Salon</div>
+      <div class="logo-tagline">Torrance &nbsp;·&nbsp; California &nbsp;·&nbsp; Est. 2011</div>
+    </div>
+
+    <nav class="split-nav">
+      <a href="#services">Services</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#about">About</a>
+      <a href="#booking">Book a Chair</a>
+      <a href="#contact">Contact</a>
+    </nav>
+
+    <address class="split-address">
+      22765 Hawthorne Blvd<br>
+      Torrance, CA &nbsp;·&nbsp; <a href="tel:3107910903">(310) 791-0903</a>
+    </address>
+  </aside>
+
+  <!-- RIGHT: Full-bleed salon photo -->
+  <div class="split-photo">
+    <img src="images/hero.jpg" alt="Inside JT Hair Salon" class="split-img">
+    <div class="split-text">
+      <p class="split-eyebrow">Welcome In</p>
+      <h1 class="split-headline">Where every visit<br>is a transformation.</h1>
     </div>
   </div>
-  <div class="hero-scroll"><span>Scroll</span><div class="scroll-line"></div></div>
-</section>
+
+</div>
 
 <!-- INTRO STRIP -->
 <div class="intro-strip">
@@ -809,25 +869,25 @@
 </footer>
 
 <script>
-  /* ── NAV SCROLL ── */
-  const nav = document.getElementById('mainNav');
+  /* ── STICKY NAV ── */
+  const stickyNav = document.getElementById('stickyNav');
+  const splitHero = document.getElementById('splitHero');
   window.addEventListener('scroll', () => {
-    nav.classList.toggle('scrolled', window.scrollY > 40);
+    const heroH = splitHero ? splitHero.offsetHeight - 80 : 500;
+    stickyNav.classList.toggle('visible', window.scrollY > heroH);
   });
 
   /* ── MOBILE MENU ── */
   document.getElementById('hamburger').addEventListener('click', () => {
     document.getElementById('mobileMenu').classList.add('open');
   });
+  document.getElementById('mobileFab').addEventListener('click', () => {
+    document.getElementById('mobileMenu').classList.add('open');
+  });
   document.getElementById('mobileClose').addEventListener('click', closeMobile);
   function closeMobile() {
     document.getElementById('mobileMenu').classList.remove('open');
   }
-
-  /* ── HERO BG LOAD ANIMATION ── */
-  window.addEventListener('load', () => {
-    document.getElementById('heroBg').classList.add('loaded');
-  });
 
   /* ── CAROUSEL ── */
   const track     = document.getElementById('carouselTrack');
