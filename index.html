@@ -48,39 +48,93 @@
       color: #bbb; margin-top: 5px; font-weight: 300;
     }
     .split-nav {
-      display: flex; flex-direction: column; gap: 22px;
-      margin: auto 0; padding: 52px 0;
+      display: flex; flex-direction: column; gap: 20px;
+      margin-top: 36px; padding: 0;
     }
     .split-nav a {
-      font-size: .71rem; letter-spacing: .24em; text-transform: uppercase;
+      font-size: .68rem; letter-spacing: .22em; text-transform: uppercase;
       color: var(--charcoal); text-decoration: none;
-      transition: color .3s, letter-spacing .3s; font-weight: 400;
+      transition: color .3s; font-weight: 400;
     }
-    .split-nav a:hover { color: var(--green); letter-spacing: .3em; }
+    .split-nav a::before { content: '—'; margin-right: 11px; color: rgba(0,0,0,.25); font-weight: 300; }
+    .split-nav a:hover { color: var(--green); }
+    .logo-divider { width: 28px; height: 1px; background: var(--charcoal); margin: 18px 0 16px; }
+    .sidebar-book-btn {
+      display: block; margin-top: 28px;
+      padding: 14px 0; background: var(--black); color: var(--white);
+      font-family: 'Jost', sans-serif; font-size: .62rem; letter-spacing: .24em;
+      text-transform: uppercase; text-decoration: none; text-align: center;
+      font-weight: 400; transition: background .3s;
+    }
+    .sidebar-book-btn:hover { background: var(--green); }
+    .sidebar-footer { margin-top: auto; padding-top: 28px; }
     .split-address {
-      font-size: .71rem; line-height: 1.8; color: #bbb;
+      font-size: .7rem; line-height: 1.9; color: var(--charcoal);
       font-weight: 300; font-style: normal;
     }
-    .split-address a { color: #bbb; text-decoration: none; }
+    .split-address strong { font-weight: 500; color: var(--black); }
+    .split-address a { color: var(--charcoal); text-decoration: none; }
     .split-address a:hover { color: var(--green); }
+    .split-social {
+      margin-top: 10px; font-size: .58rem; letter-spacing: .18em;
+      text-transform: uppercase; color: #bbb;
+    }
+    .split-social a { color: #bbb; text-decoration: none; transition: color .3s; }
+    .split-social a:hover { color: var(--black); }
     .split-photo { flex: 1; position: relative; overflow: hidden; }
+    .split-photo::after {
+      content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+      background:
+        linear-gradient(to bottom, rgba(0,0,0,.28) 0%, transparent 28%),
+        linear-gradient(to top, rgba(0,0,0,.72) 0%, transparent 58%);
+    }
     .split-img {
       width: 100%; height: 100%; object-fit: cover;
       display: block; transition: transform 8s ease;
     }
     .split-hero:hover .split-img { transform: scale(1.03); }
+    .split-topbar {
+      position: absolute; top: 0; left: 0; right: 0; z-index: 2;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 20px 40px;
+      font-family: 'Jost', sans-serif; font-size: .56rem;
+      letter-spacing: .26em; text-transform: uppercase;
+      color: rgba(255,255,255,.68);
+    }
+    .split-estab {
+      position: absolute; top: 28px; right: 44px; z-index: 2; text-align: right;
+    }
+    .split-estab-word {
+      font-family: 'Cormorant Garamond', serif; font-size: 2rem;
+      font-weight: 300; color: white; font-style: italic; line-height: 1;
+    }
+    .split-estab-year {
+      font-family: 'Cormorant Garamond', serif; font-size: 5rem;
+      font-weight: 300; color: white; line-height: .88; letter-spacing: -.02em; display: block;
+    }
+    .split-estab-sub {
+      font-family: 'Jost', sans-serif; font-size: .54rem;
+      letter-spacing: .24em; text-transform: uppercase;
+      color: rgba(255,255,255,.5); margin-top: 6px;
+    }
     .split-text {
-      position: absolute; bottom: 52px; left: 52px; right: 52px;
+      position: absolute; bottom: 52px; left: 52px; right: 52px; z-index: 2;
     }
     .split-eyebrow {
-      font-size: .6rem; letter-spacing: .35em; text-transform: uppercase;
-      color: rgba(255,255,255,.6); margin-bottom: 14px;
+      font-size: .58rem; letter-spacing: .28em; text-transform: uppercase;
+      color: rgba(255,255,255,.65); margin-bottom: 16px;
       font-family: 'Jost', sans-serif; font-weight: 300;
     }
     .split-headline {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2.4rem,4.5vw,4.4rem); font-weight: 300;
-      color: white; line-height: 1.08; font-style: italic;
+      font-size: clamp(2.8rem,5vw,5.2rem); font-weight: 300;
+      color: white; line-height: 1.05; font-style: normal;
+    }
+    .split-tags {
+      margin-top: 20px; display: flex; flex-wrap: wrap; gap: 18px;
+      font-family: 'Jost', sans-serif; font-size: .6rem;
+      letter-spacing: .2em; text-transform: uppercase;
+      color: rgba(255,255,255,.6);
     }
 
     /* ── STICKY NAV (slides in on scroll) ── */
@@ -424,10 +478,13 @@
         border-right: none; border-bottom: 1px solid var(--beige2);
         justify-content: space-between;
       }
-      .split-nav, .split-address { display: none; }
+      .split-nav, .split-address, .sidebar-footer, .sidebar-book-btn,
+      .logo-divider, .logo-tagline, .split-estab { display: none; }
       .split-photo { flex: 1; min-height: 70vh; }
+      .split-topbar { padding: 14px 20px; font-size: .52rem; }
       .split-text { bottom: 28px; left: 24px; right: 24px; }
       .split-headline { font-size: clamp(2rem,7vw,3rem); }
+      .split-tags { gap: 12px; font-size: .55rem; }
       .sticky-nav { padding: 14px 24px; }
       .sticky-links { display: none; }
       .nav-hamburger { display: flex; }
@@ -497,6 +554,7 @@
     <div class="split-logo">
       <div class="logo-jt"><span class="logo-j">J</span><span class="logo-t">T</span></div>
       <div class="logo-name">Hair Salon</div>
+      <div class="logo-divider"></div>
       <div class="logo-tagline">Torrance &nbsp;·&nbsp; California &nbsp;·&nbsp; Est. 2011</div>
     </div>
 
@@ -504,22 +562,53 @@
       <a href="#services">Services</a>
       <a href="#gallery">Gallery</a>
       <a href="#about">About</a>
-      <a href="#booking">Book a Chair</a>
+      <a href="#opportunities">Meet the Team</a>
       <a href="#contact">Contact</a>
     </nav>
 
-    <address class="split-address">
-      22765 Hawthorne Blvd<br>
-      Torrance, CA &nbsp;·&nbsp; <a href="tel:3107910903">(310) 791-0903</a>
-    </address>
+    <a href="#booking" class="sidebar-book-btn">Book a Chair</a>
+
+    <div class="sidebar-footer">
+      <address class="split-address">
+        <strong>22765 Hawthorne Blvd</strong><br>
+        Torrance, CA 90505<br>
+        <a href="tel:3107910903">(310) 791-0903</a>
+      </address>
+      <div class="split-social">
+        <a href="https://www.instagram.com/jthairstudio/" target="_blank">Instagram</a> &nbsp;·&nbsp;
+        <a href="https://www.yelp.com/biz/jt-hair-salon-torrance" target="_blank">Yelp</a> &nbsp;·&nbsp;
+        <a href="https://maps.google.com/?q=JT+Hair+Salon+Torrance" target="_blank">Google</a>
+      </div>
+    </div>
   </aside>
 
   <!-- RIGHT: Full-bleed salon photo -->
   <div class="split-photo">
     <img src="images/hero.jpg" alt="Inside JT Hair Salon" class="split-img">
+
+    <!-- Top info bar -->
+    <div class="split-topbar">
+      <span>Welcome In &nbsp;•&nbsp; Torrance, CA</span>
+      <span>Tue–Sat &nbsp; 9 – 6</span>
+    </div>
+
+    <!-- Top right Est. display -->
+    <div class="split-estab">
+      <div class="split-estab-word">Est.</div>
+      <div class="split-estab-year">2011</div>
+      <div class="split-estab-sub">15 Years of JT</div>
+    </div>
+
+    <!-- Bottom text -->
     <div class="split-text">
-      <p class="split-eyebrow">Welcome In</p>
-      <h1 class="split-headline">Where every visit<br>is a transformation.</h1>
+      <p class="split-eyebrow">— Where Every Visit Is a Transformation —</p>
+      <h1 class="split-headline">Hair that holds<br>its shape until<br>it grows out.</h1>
+      <div class="split-tags">
+        <span>♦ Cuts</span>
+        <span>♦ Color</span>
+        <span>♦ Care</span>
+        <span>♦ Bridal</span>
+      </div>
     </div>
   </div>
 
