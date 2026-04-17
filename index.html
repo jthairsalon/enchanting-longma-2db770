@@ -96,18 +96,21 @@
       font-size: .56rem; letter-spacing: .26em; text-transform: uppercase;
       color: rgba(255,255,255,.68);
     }
-    .split-estab { position: absolute; top: 28px; right: 44px; z-index: 2; text-align: right; }
-    .split-estab-word {
-      font-family: 'Cormorant Garamond', serif; font-size: 2rem;
-      font-weight: 300; color: white; font-style: italic; line-height: 1;
+    .split-since {
+      position: absolute; top: 40px; right: 48px; z-index: 2;
+      text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 7px;
     }
-    .split-estab-year {
-      font-family: 'Cormorant Garamond', serif; font-size: 5rem;
-      font-weight: 300; color: white; line-height: .88; letter-spacing: -.02em; display: block;
+    .split-since-year {
+      font-family: 'Cormorant Garamond', serif; font-size: 1.05rem;
+      font-weight: 300; font-style: italic; color: rgba(255,255,255,.82);
+      letter-spacing: .06em;
     }
-    .split-estab-sub {
-      font-family: 'Jost', sans-serif; font-size: .54rem;
-      letter-spacing: .24em; text-transform: uppercase; color: rgba(255,255,255,.5); margin-top: 6px;
+    .split-since-rule {
+      width: 36px; height: 1px; background: rgba(255,255,255,.35);
+    }
+    .split-since-sub {
+      font-family: 'Jost', sans-serif; font-size: .5rem;
+      letter-spacing: .28em; text-transform: uppercase; color: rgba(255,255,255,.42);
     }
     .split-text { position: absolute; bottom: 52px; left: 52px; right: 52px; z-index: 2; }
     .split-eyebrow {
@@ -538,7 +541,7 @@
       .split-photo { flex: 1; min-height: 70vh; }
       .split-text { bottom: 28px; left: 24px; right: 24px; }
       .split-headline { font-size: clamp(2rem,7vw,3rem); }
-      .split-estab { display: none; }
+      .split-since { display: none; }
       .split-topbar { padding: 14px 20px; font-size: .52rem; }
       .about-inner, .contact-inner { grid-template-columns: 1fr; gap: 48px; }
       .about-img-wrap { height: 430px; }
@@ -633,12 +636,11 @@
     <img src="images/hero.jpg" alt="Inside JT Hair Salon" class="split-img">
     <div class="split-topbar">
       <span>Welcome In &nbsp;•&nbsp; Torrance, CA</span>
-      <span>Tue–Sat &nbsp; 9 – 6</span>
     </div>
-    <div class="split-estab">
-      <div class="split-estab-word">Est.</div>
-      <div class="split-estab-year">1996</div>
-      <div class="split-estab-sub">30 Years of JT</div>
+    <div class="split-since">
+      <div class="split-since-year">Since 1996</div>
+      <div class="split-since-rule"></div>
+      <div class="split-since-sub">Torrance, California</div>
     </div>
     <div class="split-text">
       <p class="split-eyebrow">— Where Every Visit Is a Transformation —</p>
