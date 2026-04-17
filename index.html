@@ -314,10 +314,10 @@
     .btn-dark:hover { background: var(--green); }
 
     /* ── GALLERY ── */
-    .gallery { background: linear-gradient(135deg, #ffffff 0%, #e4f2e8 35%, #c2ddc9 70%, #a8ccb2 100%); padding-top: 100px; padding-bottom: 80px; }
+    .gallery { background: linear-gradient(to right, #2D5E3A 0%, #5A9E6E 45%, #A8D5B5 100%); padding-top: 100px; padding-bottom: 80px; }
     .gallery-inner { max-width: 1200px; margin: 0 auto 52px; padding: 0 48px; }
-    .gallery-inner .section-heading { color: var(--black); }
-    .gallery-inner .section-label { color: var(--green); }
+    .gallery-inner .section-heading { color: var(--white); }
+    .gallery-inner .section-label { color: rgba(255,255,255,.75); }
 
     .carousel-outer { position: relative; padding: 0 48px; }
     .carousel-viewport { overflow: hidden; width: 100%; }
@@ -351,10 +351,10 @@
     .carousel-dots { display: flex; gap: 10px; justify-content: center; margin-top: 36px; }
     .carousel-dot {
       width: 6px; height: 6px; border-radius: 50%;
-      background: rgba(0,0,0,.2); border: none;
+      background: rgba(255,255,255,.35); border: none;
       cursor: pointer; transition: background .3s, transform .3s; padding: 0;
     }
-    .carousel-dot.active { background: var(--green); transform: scale(1.5); }
+    .carousel-dot.active { background: var(--white); transform: scale(1.5); }
 
     /* ── BOOKING ── */
     .booking { background: var(--cream); }
