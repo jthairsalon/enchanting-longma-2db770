@@ -314,10 +314,10 @@
     .btn-dark:hover { background: var(--green); }
 
     /* ── GALLERY ── */
-    .gallery { background: #1E2922; padding-top: 100px; padding-bottom: 80px; }
+    .gallery { background: #D6E8DC; padding-top: 100px; padding-bottom: 80px; }
     .gallery-inner { max-width: 1200px; margin: 0 auto 52px; padding: 0 48px; }
-    .gallery-inner .section-heading { color: var(--white); }
-    .gallery-inner .section-label { color: var(--green-lt); }
+    .gallery-inner .section-heading { color: var(--black); }
+    .gallery-inner .section-label { color: var(--green); }
 
     .carousel-outer { position: relative; padding: 0 48px; }
     .carousel-viewport { overflow: hidden; width: 100%; }
@@ -351,10 +351,10 @@
     .carousel-dots { display: flex; gap: 10px; justify-content: center; margin-top: 36px; }
     .carousel-dot {
       width: 6px; height: 6px; border-radius: 50%;
-      background: rgba(255,255,255,.25); border: none;
+      background: rgba(0,0,0,.2); border: none;
       cursor: pointer; transition: background .3s, transform .3s; padding: 0;
     }
-    .carousel-dot.active { background: var(--white); transform: scale(1.5); }
+    .carousel-dot.active { background: var(--green); transform: scale(1.5); }
 
     /* ── BOOKING ── */
     .booking { background: var(--cream); }
@@ -415,15 +415,15 @@
     .booking-confirmation p { font-size: .88rem; color: #888; margin-top: 12px; font-weight: 300; }
 
     /* ── CONTACT ── */
-    .contact { background: #232220; }
+    .contact { background: #E4DED6; }
     .contact-inner {
       max-width: 1100px; margin: 0 auto;
       display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
     }
-    .contact .section-heading { color: var(--white); }
-    .contact .section-label { color: var(--green-lt); }
+    .contact .section-heading { color: var(--black); }
+    .contact .section-label { color: var(--green); }
     .contact-desc {
-      font-size: .9rem; line-height: 1.85; color: rgba(255,255,255,.5);
+      font-size: .9rem; line-height: 1.85; color: var(--charcoal);
       font-weight: 300; margin-top: 24px;
     }
     .contact-details { margin-top: 52px; display: flex; flex-direction: column; gap: 28px; }
@@ -436,34 +436,34 @@
     .contact-item-text { display: flex; flex-direction: column; gap: 3px; }
     .contact-item-label {
       font-size: .6rem; letter-spacing: .22em; text-transform: uppercase;
-      color: rgba(255,255,255,.35); font-family: 'Jost', sans-serif;
+      color: var(--grey-mid); font-family: 'Jost', sans-serif;
     }
-    .contact-item-value { font-size: .93rem; color: var(--beige); font-weight: 300; }
-    .contact-item-value a { color: var(--beige); text-decoration: none; }
-    .contact-item-value a:hover { color: var(--green-lt); }
+    .contact-item-value { font-size: .93rem; color: var(--charcoal); font-weight: 300; }
+    .contact-item-value a { color: var(--charcoal); text-decoration: none; }
+    .contact-item-value a:hover { color: var(--green); }
     .map-link {
       display: inline-flex; align-items: center; gap: 10px; margin-top: 36px;
       font-size: .68rem; letter-spacing: .18em; text-transform: uppercase;
-      color: var(--green-lt); text-decoration: none; transition: gap .3s;
+      color: var(--green); text-decoration: none; transition: gap .3s;
       font-family: 'Jost', sans-serif;
     }
     .map-link:hover { gap: 16px; }
     .map-link svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.8; }
     .hours-card {
-      background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); padding: 44px;
+      background: rgba(255,255,255,.45); border: 1px solid rgba(0,0,0,.08); padding: 44px;
     }
     .hours-title {
       font-family: 'Cormorant Garamond', serif; font-size: 1.5rem;
-      color: var(--white); font-weight: 300; margin-bottom: 28px;
+      color: var(--black); font-weight: 300; margin-bottom: 28px;
     }
     .hours-row {
       display: flex; justify-content: space-between; padding: 14px 0;
-      border-bottom: 1px solid rgba(255,255,255,.06); font-size: .82rem; font-weight: 300;
+      border-bottom: 1px solid rgba(0,0,0,.08); font-size: .82rem; font-weight: 300;
     }
     .hours-row:last-child { border-bottom: none; }
-    .hours-day { color: rgba(255,255,255,.45); letter-spacing: .06em; }
-    .hours-time { color: var(--beige2); }
-    .hours-time.green { color: var(--green-lt); }
+    .hours-day { color: var(--grey-mid); letter-spacing: .06em; }
+    .hours-time { color: var(--charcoal); }
+    .hours-time.green { color: var(--green); }
 
     /* ── OPPORTUNITIES ── */
     .opportunities { background: var(--grey); }
