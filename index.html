@@ -817,24 +817,79 @@
       <div>
         <span class="section-label">Schedule a Visit</span>
         <h2 class="section-heading">Book Your<br><em>Appointment</em></h2>
-        <p>Book instantly online — choose your stylist, service, and time. Walk-ins are always welcome too — give us a call at <a href="tel:3107910903" style="color:var(--green)">(310) 791-0903</a>.</p>
+        <p>Fill out the form below and you'll be taken directly to confirm your appointment. Walk-ins are always welcome too — give us a call at <a href="tel:3107910903" style="color:var(--green)">(310) 791-0903</a>.</p>
       </div>
     </div>
 
     <div class="booking-form reveal" id="bookingForm">
-      <!-- Embedded booking begin -->
-      <div class="embedded-booking"
-        data-url="https://jthairsalon.trafft.com"
-        data-query="&t=s&uuid=4f6b5bc3-caa1-4d1f-9021-cd52ff0d21c9"
-        data-lang="en"
-        data-autoresize="1"
-        data-showsidebar="1"
-        data-showservices="1"
-        style="min-width: 320px; height: 768px;">
+      <form id="apptForm" onsubmit="submitBooking(event)">
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label" for="fname">First Name *</label>
+            <input class="form-input" id="fname" name="fname" type="text" placeholder="Your first name" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="lname">Last Name</label>
+            <input class="form-input" id="lname" name="lname" type="text" placeholder="Your last name">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="phone">Phone Number *</label>
+            <input class="form-input" id="phone" name="phone" type="tel" placeholder="(310) 000-0000" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="email">Email Address</label>
+            <input class="form-input" id="email" name="email" type="email" placeholder="your@email.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="service">Service *</label>
+            <select class="form-select" id="service" name="service" required>
+              <option value="">Select a service…</option>
+              <option value="Haircuts &amp; Styling">Haircuts &amp; Styling</option>
+              <option value="Color &amp; Highlights">Color &amp; Highlights</option>
+              <option value="Relaxers &amp; Perms">Relaxers &amp; Perms</option>
+              <option value="Blow-Outs &amp; Sets">Blow-Outs &amp; Sets</option>
+              <option value="Deep Conditioning">Deep Conditioning</option>
+              <option value="Natural Hair Care">Natural Hair Care</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="stylist">Preferred Stylist</label>
+            <select class="form-select" id="stylist" name="stylist">
+              <option value="">No preference</option>
+              <option value="John Gutierrez">John Gutierrez</option>
+              <option value="Fernando Candela">Fernando Candela</option>
+              <option value="Zhanna Pak">Zhanna Pak</option>
+              <option value="Kelly Wang">Kelly Wang</option>
+              <option value="Song Lim">Song Lim</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="apptDate">Preferred Date *</label>
+            <input class="form-input" id="apptDate" name="apptDate" type="date" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="apptTime">Preferred Time *</label>
+            <select class="form-select" id="apptTime" name="apptTime" required><option value="">Select a date first…</option></select>
+          </div>
+          <div class="form-group full">
+            <label class="form-label" for="notes">Additional Notes</label>
+            <textarea class="form-textarea" id="notes" name="notes" placeholder="Anything we should know about your hair, style goals, or special requests…"></textarea>
+          </div>
+        </div>
+        <div class="form-actions">
+          <p class="form-note">Real-time availability — instant confirmation. Prefer to call? <a href="tel:3107910903">(310) 791-0903</a></p>
+          <button class="form-submit" type="submit">Book Appointment</button>
+        </div>
+      </form>
+
+      <!-- Confirmation shown after submit -->
+      <div class="booking-confirmation" id="bookingConfirm">
+        <div class="check">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </div>
+        <h3>Opening Your Booking…</h3>
+        <p>Redirecting you to confirm your appointment in real-time.<br>If the page doesn't open, <a id="trafftLink" href="https://jthairsalon.trafft.com" target="_blank" style="color:var(--green)">click here</a>.</p>
       </div>
-      <script type="text/javascript" src="https://jthairsalon.trafft.com/embed.js" async></script>
-      <!-- Embedded booking end -->
-      <p style="margin-top:24px; text-align:center; font-size:.8rem; color:var(--grey-mid); font-weight:300;">Prefer to call? <a href="tel:3107910903" style="color:var(--green)">(310) 791-0903</a></p>
     </div>
   </div>
 </section>
@@ -1083,8 +1138,6 @@
   // ╚══════════════════════════════════════════════════════════════╝
   const STYLIST_SCHEDULE = {
     'John Gutierrez': {
-      // Regular weekly hours: 10:30 AM – 6:00 PM
-      // Remove a day (or set []) to mark as day off.
       0: [],  // Sunday — OFF
       1: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM',
           '1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM',
@@ -1106,27 +1159,40 @@
           '4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],  // Saturday
     },
     'Fernando Candela': {
-      // Regular weekly hours: 10:30 AM – 6:00 PM
-      // Remove a day (or set []) to mark as day off.
-      0: [],  // Sunday — OFF
-      1: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM',
-          '1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM',
-          '4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],  // Monday
-      2: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM',
-          '1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM',
-          '4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],  // Tuesday
-      3: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM',
-          '1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM',
-          '4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],  // Wednesday
-      4: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM',
-          '1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM',
-          '4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],  // Thursday
-      5: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM',
-          '1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM',
-          '4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],  // Friday
-      6: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM',
-          '1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM',
-          '4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],  // Saturday
+      0: [],
+      1: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
+      2: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
+      3: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
+      4: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
+      5: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
+      6: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
+    },
+    'Zhanna Pak': {
+      0: [],
+      1: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
+      2: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
+      3: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
+      4: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
+      5: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
+      6: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
+    },
+    'Kelly Wang': {
+      0: [],
+      1: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
+      2: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
+      3: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
+      4: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
+      5: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
+      6: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
+    },
+    'Song Lim': {
+      0: [],
+      1: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
+      2: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
+      3: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
+      4: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
+      5: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
+      6: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
     }
   };
 
@@ -1227,26 +1293,45 @@
   dateInput.addEventListener('change', updateTimes);
   updateTimes();
 
+  // Trafft employee & service ID mappings
+  const STYLIST_ID = {
+    'John Gutierrez':   4,
+    'Zhanna Pak':       5,
+    'Fernando Candela': 6,
+    'Kelly Wang':       7,
+    'Song Lim':         8
+  };
+  const SERVICE_ID = {
+    'Haircuts & Styling': 4,
+    'Color & Highlights': 5,
+    'Relaxers & Perms':   6,
+    'Blow-Outs & Sets':   7,
+    'Deep Conditioning':  8,
+    'Natural Hair Care':  9
+  };
+
   function submitBooking(e) {
     e.preventDefault();
     const f = e.target;
-    const subject = encodeURIComponent('Appointment Request — JT Hair Salon');
-    const body = encodeURIComponent(
-      'Hi JT Hair Salon,\n\n' +
-      'I would like to book an appointment.\n\n' +
-      'Name: ' + f.fname.value + ' ' + f.lname.value + '\n' +
-      'Phone: ' + f.phone.value + '\n' +
-      'Email: ' + (f.email.value || 'N/A') + '\n' +
-      'Service: ' + f.service.value + '\n' +
-      'Preferred Stylist: ' + (f.stylist.value || 'Any') + '\n' +
-      'Preferred Date: ' + f.apptDate.value + '\n' +
-      'Preferred Time: ' + f.apptTime.value + '\n' +
-      'Notes: ' + (f.notes.value || 'None') + '\n\n' +
-      'Thank you!'
-    );
-    window.location.href = 'mailto:?subject=' + subject + '&body=' + body;
+
+    // Build Trafft booking URL with pre-selected stylist & service
+    const params = new URLSearchParams();
+    const empId = STYLIST_ID[f.stylist.value];
+    const svcId = SERVICE_ID[f.service.value];
+    if (empId) params.set('employee', empId);
+    if (svcId) params.set('service',  svcId);
+    if (f.apptDate.value) params.set('date', f.apptDate.value);
+    const trafftUrl = 'https://jthairsalon.trafft.com' +
+                      (params.toString() ? '?' + params.toString() : '');
+
+    // Show confirmation state
     document.getElementById('apptForm').style.display = 'none';
-    document.getElementById('bookingConfirm').style.display = 'block';
+    const confirm = document.getElementById('bookingConfirm');
+    confirm.style.display = 'block';
+    document.getElementById('trafftLink').href = trafftUrl;
+
+    // Open Trafft booking in new tab
+    window.open(trafftUrl, '_blank');
   }
 
   /* ── OPPORTUNITY FORM ── */
