@@ -358,61 +358,20 @@
 
     /* ── BOOKING ── */
     .booking { background: var(--cream); }
-    .booking-inner { max-width: 900px; margin: 0 auto; }
-    .booking-header { margin-bottom: 52px; }
+    .booking-inner { max-width: 960px; margin: 0 auto; }
+    .booking-header { margin-bottom: 40px; }
     .booking-header p {
       font-size: .9rem; line-height: 1.75; color: var(--charcoal);
       font-weight: 300; margin-top: 16px; max-width: 500px;
     }
-    .booking-form {
-      background: var(--white); border: 1px solid var(--beige2); padding: 56px 60px;
+    .booking-embed {
+      background: var(--white); border: 1px solid var(--beige2);
+      overflow: hidden;
     }
-    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
-    .form-group { display: flex; flex-direction: column; gap: 8px; }
-    .form-group.full { grid-column: 1 / -1; }
-    .form-label {
-      font-size: .58rem; letter-spacing: .22em; text-transform: uppercase;
-      color: var(--charcoal); font-weight: 400; font-family: 'Jost', sans-serif;
+    .booking-embed iframe {
+      display: block; width: 100%; height: 720px; border: none;
     }
-    .form-input, .form-select, .form-textarea {
-      width: 100%; padding: 14px 16px;
-      border: 1px solid var(--beige2); background: var(--white);
-      font-family: 'Jost', sans-serif; font-size: .88rem; font-weight: 300;
-      color: var(--black); outline: none; transition: border-color .3s;
-      border-radius: 0; -webkit-appearance: none;
-    }
-    .form-input:focus, .form-select:focus, .form-textarea:focus {
-      border-color: var(--blue);
-    }
-    .form-textarea { min-height: 110px; resize: vertical; }
-    .form-select {
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234A7A56' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
-      background-repeat: no-repeat; background-position: right 16px center; padding-right: 40px;
-    }
-    .form-actions {
-      margin-top: 36px; display: flex; align-items: center;
-      justify-content: space-between; flex-wrap: wrap; gap: 20px;
-    }
-    .form-note { font-size: .78rem; color: #999; font-weight: 300; font-family: 'Jost', sans-serif; }
-    .form-note a { color: var(--green); text-decoration: none; }
-    .form-submit {
-      padding: 15px 48px; background: var(--black); color: var(--white);
-      font-family: 'Jost', sans-serif; font-size: .68rem; font-weight: 400;
-      letter-spacing: .2em; text-transform: uppercase; border: none; cursor: pointer;
-      transition: background .3s;
-    }
-    .form-submit:hover { background: var(--green); }
-    .booking-confirmation {
-      display: none; text-align: center; padding: 60px 40px;
-    }
-    .booking-confirmation .check {
-      width: 56px; height: 56px; border: 2px solid var(--green);
-      border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 24px;
-    }
-    .booking-confirmation .check svg { width: 24px; height: 24px; stroke: var(--green); fill: none; stroke-width: 2; }
-    .booking-confirmation h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 300; }
-    .booking-confirmation p { font-size: .88rem; color: #888; margin-top: 12px; font-weight: 300; }
+    @media (max-width: 600px) { .booking-embed iframe { height: 860px; } }
 
     /* ── CONTACT ── */
     .contact { background: #E4DED6; }
@@ -817,79 +776,17 @@
       <div>
         <span class="section-label">Schedule a Visit</span>
         <h2 class="section-heading">Book Your<br><em>Appointment</em></h2>
-        <p>Fill out the form below and you'll be taken directly to confirm your appointment. Walk-ins are always welcome too — give us a call at <a href="tel:3107910903" style="color:var(--green)">(310) 791-0903</a>.</p>
+        <p>Book directly below — real-time availability, instant confirmation. Walk-ins welcome too. Call us at <a href="tel:3107910903" style="color:var(--green)">(310) 791-0903</a>.</p>
       </div>
     </div>
 
-    <div class="booking-form reveal" id="bookingForm">
-      <form id="apptForm" onsubmit="submitBooking(event)">
-        <div class="form-grid">
-          <div class="form-group">
-            <label class="form-label" for="fname">First Name *</label>
-            <input class="form-input" id="fname" name="fname" type="text" placeholder="Your first name" required>
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="lname">Last Name</label>
-            <input class="form-input" id="lname" name="lname" type="text" placeholder="Your last name">
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="phone">Phone Number *</label>
-            <input class="form-input" id="phone" name="phone" type="tel" placeholder="(310) 000-0000" required>
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="email">Email Address</label>
-            <input class="form-input" id="email" name="email" type="email" placeholder="your@email.com">
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="service">Service *</label>
-            <select class="form-select" id="service" name="service" required>
-              <option value="">Select a service…</option>
-              <option value="Haircuts &amp; Styling">Haircuts &amp; Styling</option>
-              <option value="Color &amp; Highlights">Color &amp; Highlights</option>
-              <option value="Relaxers &amp; Perms">Relaxers &amp; Perms</option>
-              <option value="Blow-Outs &amp; Sets">Blow-Outs &amp; Sets</option>
-              <option value="Deep Conditioning">Deep Conditioning</option>
-              <option value="Natural Hair Care">Natural Hair Care</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="stylist">Preferred Stylist</label>
-            <select class="form-select" id="stylist" name="stylist">
-              <option value="">No preference</option>
-              <option value="John Gutierrez">John</option>
-              <option value="Fernando Candela">Fernando</option>
-              <option value="Zhanna Pak">Zhanna</option>
-              <option value="Kelly Wang">Kelly</option>
-              <option value="Song Lim">Song</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="apptDate">Preferred Date *</label>
-            <input class="form-input" id="apptDate" name="apptDate" type="date" required>
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="apptTime">Preferred Time *</label>
-            <select class="form-select" id="apptTime" name="apptTime" required><option value="">Select a date first…</option></select>
-          </div>
-          <div class="form-group full">
-            <label class="form-label" for="notes">Additional Notes</label>
-            <textarea class="form-textarea" id="notes" name="notes" placeholder="Anything we should know about your hair, style goals, or special requests…"></textarea>
-          </div>
-        </div>
-        <div class="form-actions">
-          <p class="form-note">Real-time availability — instant confirmation. Prefer to call? <a href="tel:3107910903">(310) 791-0903</a></p>
-          <button class="form-submit" type="submit">Book Appointment</button>
-        </div>
-      </form>
-
-      <!-- Confirmation shown after submit -->
-      <div class="booking-confirmation" id="bookingConfirm">
-        <div class="check">
-          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
-        </div>
-        <h3>Opening Your Booking…</h3>
-        <p>Redirecting you to confirm your appointment in real-time.<br>If the page doesn't open, <a id="trafftLink" href="https://jthairsalon.trafft.com" target="_blank" style="color:var(--green)">click here</a>.</p>
-      </div>
+    <div class="booking-embed reveal">
+      <iframe
+        src="https://jthairsalon.trafft.com"
+        title="Book an appointment at JT Hair Salon"
+        loading="lazy"
+        allowfullscreen>
+      </iframe>
     </div>
   </div>
 </section>
@@ -1130,209 +1027,15 @@
   buildDots();
   updateButtons();
 
-  /* ── BOOKING FORM ── */
-
-  // ╔══════════════════════════════════════════════════════════════╗
-  // ║  STYLIST SCHEDULE — Edit times here to update availability  ║
-  // ║  Days: 0=Sun  1=Mon  2=Tue  3=Wed  4=Thu  5=Fri  6=Sat     ║
-  // ╚══════════════════════════════════════════════════════════════╝
-  const STYLIST_SCHEDULE = {
-    'John Gutierrez': {
-      0: [],  // Sunday — OFF
-      1: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM',
-          '1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM',
-          '4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],  // Monday
-      2: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM',
-          '1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM',
-          '4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],  // Tuesday
-      3: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM',
-          '1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM',
-          '4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],  // Wednesday
-      4: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM',
-          '1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM',
-          '4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],  // Thursday
-      5: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM',
-          '1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM',
-          '4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],  // Friday
-      6: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM',
-          '1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM',
-          '4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],  // Saturday
-    },
-    'Fernando Candela': {
-      0: [],
-      1: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
-      2: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
-      3: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
-      4: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
-      5: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
-      6: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
-    },
-    'Zhanna Pak': {
-      0: [],
-      1: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
-      2: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
-      3: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
-      4: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
-      5: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
-      6: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
-    },
-    'Kelly Wang': {
-      0: [],
-      1: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
-      2: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
-      3: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
-      4: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
-      5: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
-      6: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
-    },
-    'Song Lim': {
-      0: [],
-      1: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
-      2: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
-      3: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
-      4: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
-      5: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
-      6: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
+  /* ── BOOKING EMBED resize ── */
+  // Auto-resize iframe height based on messages from Trafft
+  window.addEventListener('message', function(e) {
+    if (e.origin !== 'https://jthairsalon.trafft.com') return;
+    const iframe = document.querySelector('.booking-embed iframe');
+    if (iframe && e.data && e.data.height) {
+      iframe.style.height = e.data.height + 'px';
     }
-  };
-
-  // ╔══════════════════════════════════════════════════════════════╗
-  // ║  DATE OVERRIDES — Specific dates with different hours       ║
-  // ║  These override the weekly schedule for that exact date.    ║
-  // ║  Format: 'YYYY-MM-DD': ['time', 'time', ...]               ║
-  // ╚══════════════════════════════════════════════════════════════╝
-  const DATE_OVERRIDES = {
-    'John Gutierrez': {
-      '2026-03-31': ['11:45 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM',
-                     '2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM',
-                     '4:30 PM','5:00 PM'],                        // Tue Mar 31 — 11:45 AM–5 PM
-      '2026-04-01': ['10:00 AM','10:30 AM','11:00 AM','11:30 AM','12:00 PM',
-                     '12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM',
-                     '3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM'],  // Wed Apr 1 — 10 AM–5 PM
-      '2026-04-02': ['10:00 AM','10:30 AM','11:00 AM','11:30 AM','12:00 PM',
-                     '12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM',
-                     '3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM'],  // Thu Apr 2 — 10 AM–5 PM
-      '2026-04-03': ['11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM',
-                     '2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM'],  // Fri Apr 3 — 11:30 AM–4 PM
-    },
-    'Fernando Candela': {
-      // Add date overrides below — one line per date:
-      // '2026-04-10': ['11:00 AM','11:30 AM','12:00 PM'],
-    }
-  };
-
-  // ╔══════════════════════════════════════════════════════════════╗
-  // ║  BLOCKED SLOTS — Add phone/walk-in bookings here           ║
-  // ║  Format: 'YYYY-MM-DD': ['time', 'time']                   ║
-  // ║  Example: '2026-03-28': ['10:00 AM', '2:30 PM']           ║
-  // ╚══════════════════════════════════════════════════════════════╝
-  const BLOCKED_SLOTS = {
-    'John Gutierrez': {
-      // Add blocked dates below — one line per day:
-      // '2026-03-28': ['10:00 AM', '2:30 PM'],
-    },
-    'Fernando Candela': {
-      // Add blocked dates below — one line per day:
-      // '2026-03-28': ['10:00 AM', '2:30 PM'],
-    }
-  };
-
-  // All general salon times (used when "Any stylist" is selected)
-  const ALL_TIMES = [
-    '9:00 AM','9:30 AM','10:00 AM','10:30 AM','11:00 AM','11:30 AM',
-    '12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM',
-    '3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM',
-    '6:00 PM','6:30 PM'
-  ];
-
-  const dateInput   = document.getElementById('apptDate');
-  const stylistSel  = document.getElementById('stylist');
-  const timeSel     = document.getElementById('apptTime');
-  const today = new Date().toISOString().split('T')[0];
-  dateInput.setAttribute('min', today);
-
-  function updateTimes() {
-    const stylist = stylistSel.value;
-    const dateVal = dateInput.value;
-    timeSel.innerHTML = '';
-
-    let times = ALL_TIMES;
-    let placeholder = 'Select a time…';
-
-    if (stylist && STYLIST_SCHEDULE[stylist]) {
-      if (!dateVal) {
-        placeholder = 'Select a date first…';
-        times = [];
-      } else {
-        // Date override takes priority over regular weekly schedule
-        if (DATE_OVERRIDES[stylist] && DATE_OVERRIDES[stylist][dateVal]) {
-          times = DATE_OVERRIDES[stylist][dateVal].slice();
-        } else {
-          const dayOfWeek = new Date(dateVal + 'T12:00:00').getDay();
-          times = (STYLIST_SCHEDULE[stylist][dayOfWeek] || []).slice();
-        }
-        // Remove any times blocked by phone/walk-in bookings
-        const blocked = (BLOCKED_SLOTS[stylist] && BLOCKED_SLOTS[stylist][dateVal]) || [];
-        times = times.filter(t => !blocked.includes(t));
-        if (times.length === 0) placeholder = stylist + ' is fully booked that day';
-      }
-    }
-
-    const blank = document.createElement('option');
-    blank.value = '';
-    blank.textContent = placeholder;
-    timeSel.appendChild(blank);
-    times.forEach(t => {
-      const opt = document.createElement('option');
-      opt.value = t; opt.textContent = t;
-      timeSel.appendChild(opt);
-    });
-  }
-
-  stylistSel.addEventListener('change', updateTimes);
-  dateInput.addEventListener('change', updateTimes);
-  updateTimes();
-
-  // Trafft employee & service ID mappings
-  const STYLIST_ID = {
-    'John Gutierrez':   4,
-    'Zhanna Pak':       5,
-    'Fernando Candela': 6,
-    'Kelly Wang':       7,
-    'Song Lim':         8
-  };
-  const SERVICE_ID = {
-    'Haircuts & Styling': 4,
-    'Color & Highlights': 5,
-    'Relaxers & Perms':   6,
-    'Blow-Outs & Sets':   7,
-    'Deep Conditioning':  8,
-    'Natural Hair Care':  9
-  };
-
-  function submitBooking(e) {
-    e.preventDefault();
-    const f = e.target;
-
-    // Build Trafft booking URL with pre-selected stylist & service
-    const params = new URLSearchParams();
-    const empId = STYLIST_ID[f.stylist.value];
-    const svcId = SERVICE_ID[f.service.value];
-    if (empId) params.set('employee', empId);
-    if (svcId) params.set('service',  svcId);
-    if (f.apptDate.value) params.set('date', f.apptDate.value);
-    const trafftUrl = 'https://jthairsalon.trafft.com' +
-                      (params.toString() ? '?' + params.toString() : '');
-
-    // Show confirmation state
-    document.getElementById('apptForm').style.display = 'none';
-    const confirm = document.getElementById('bookingConfirm');
-    confirm.style.display = 'block';
-    document.getElementById('trafftLink').href = trafftUrl;
-
-    // Open Trafft booking in new tab
-    window.open(trafftUrl, '_blank');
-  }
+  });
 
   /* ── OPPORTUNITY FORM ── */
   function submitOpportunity(e) {
