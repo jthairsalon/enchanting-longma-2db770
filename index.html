@@ -817,76 +817,24 @@
       <div>
         <span class="section-label">Schedule a Visit</span>
         <h2 class="section-heading">Book Your<br><em>Appointment</em></h2>
-        <p>Fill out the form below and we'll confirm your appointment within a few hours. Walk-ins are always welcome too — give us a call at <a href="tel:3107910903" style="color:var(--green)">(310) 791-0903</a>.</p>
+        <p>Book instantly online — choose your stylist, service, and time. Walk-ins are always welcome too — give us a call at <a href="tel:3107910903" style="color:var(--green)">(310) 791-0903</a>.</p>
       </div>
     </div>
 
     <div class="booking-form reveal" id="bookingForm">
-      <form id="apptForm" onsubmit="submitBooking(event)">
-        <div class="form-grid">
-          <div class="form-group">
-            <label class="form-label" for="fname">First Name *</label>
-            <input class="form-input" id="fname" name="fname" type="text" placeholder="Your first name" required>
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="lname">Last Name</label>
-            <input class="form-input" id="lname" name="lname" type="text" placeholder="Your last name">
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="phone">Phone Number *</label>
-            <input class="form-input" id="phone" name="phone" type="tel" placeholder="(310) 000-0000" required>
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="email">Email Address</label>
-            <input class="form-input" id="email" name="email" type="email" placeholder="your@email.com">
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="service">Service *</label>
-            <select class="form-select" id="service" name="service" required>
-              <option value="">Select a service…</option>
-              <option>Haircut &amp; Styling</option>
-              <option>Color &amp; Highlights</option>
-              <option>Relaxer / Perm</option>
-              <option>Blow-Out &amp; Set</option>
-              <option>Deep Conditioning</option>
-              <option>Natural Hair Care</option>
-              <option>Other / Consultation</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="stylist">Preferred Stylist</label>
-            <select class="form-select" id="stylist" name="stylist">
-              <option value="John Gutierrez" selected>John Gutierrez</option>
-              <option value="Fernando Candela">Fernando Candela</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="apptDate">Preferred Date *</label>
-            <input class="form-input" id="apptDate" name="apptDate" type="date" required min="2026-03-28">
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="apptTime">Preferred Time *</label>
-            <select class="form-select" id="apptTime" name="apptTime" required><option value="">Select a date first…</option></select>
-          </div>
-          <div class="form-group full">
-            <label class="form-label" for="notes">Additional Notes</label>
-            <textarea class="form-textarea" id="notes" name="notes" placeholder="Anything we should know about your hair, style goals, or special requests…"></textarea>
-          </div>
-        </div>
-        <div class="form-actions">
-          <p class="form-note">We'll confirm your booking within a few hours. Prefer to call? <a href="tel:3107910903">(310) 791-0903</a></p>
-          <button class="form-submit" type="submit">Request Appointment</button>
-        </div>
-      </form>
-
-      <!-- Confirmation message shown after submit -->
-      <div class="booking-confirmation" id="bookingConfirm">
-        <div class="check">
-          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
-        </div>
-        <h3>Request Sent!</h3>
-        <p>Thank you! We'll reach out to confirm your appointment soon.<br>Questions? Call us at <a href="tel:3107910903" style="color:var(--green)">(310) 791-0903</a>.</p>
+      <!-- Embedded booking begin -->
+      <div class="embedded-booking"
+        data-url="https://jthairsalon.trafft.com"
+        data-query="&t=s&uuid=4f6b5bc3-caa1-4d1f-9021-cd52ff0d21c9"
+        data-lang="en"
+        data-autoresize="1"
+        data-showsidebar="1"
+        data-showservices="1"
+        style="min-width: 320px; height: 768px;">
       </div>
+      <script type="text/javascript" src="https://jthairsalon.trafft.com/embed.js" async></script>
+      <!-- Embedded booking end -->
+      <p style="margin-top:24px; text-align:center; font-size:.8rem; color:var(--grey-mid); font-weight:300;">Prefer to call? <a href="tel:3107910903" style="color:var(--green)">(310) 791-0903</a></p>
     </div>
   </div>
 </section>
