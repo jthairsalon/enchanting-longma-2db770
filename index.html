@@ -856,11 +856,11 @@
             <label class="form-label" for="stylist">Preferred Stylist</label>
             <select class="form-select" id="stylist" name="stylist">
               <option value="">No preference</option>
-              <option value="John Gutierrez">John</option>
-              <option value="Fernando Candela">Fernando</option>
-              <option value="Zhanna Pak">Zhanna</option>
-              <option value="Kelly Wang">Kelly</option>
-              <option value="Song Lim">Song</option>
+              <option value="John Gutierrez">John Gutierrez</option>
+              <option value="Fernando Candela">Fernando Candela</option>
+              <option value="Zhanna">Zhanna</option>
+              <option value="Kelly Wang">Kelly Wang</option>
+              <option value="Song">Song</option>
             </select>
           </div>
           <div class="form-group">
@@ -1150,7 +1150,7 @@
       5: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
       6: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
     },
-    'Zhanna Pak': {
+    'Zhanna': {
       0: [],
       1: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
       2: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
@@ -1168,7 +1168,7 @@
       5: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
       6: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
     },
-    'Song Lim': {
+    'Song': {
       0: [],
       1: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
       2: ['10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM'],
@@ -1209,7 +1209,7 @@
   dateInput.addEventListener('change', updateTimes);
   updateTimes();
 
-  const STYLIST_ID = { 'John Gutierrez':4, 'Zhanna Pak':5, 'Fernando Candela':6, 'Kelly Wang':7, 'Song Lim':8 };
+  const STYLIST_ID = { 'John Gutierrez':4, 'Zhanna':5, 'Fernando Candela':6, 'Kelly Wang':7, 'Song':8 };
   const SERVICE_ID = { 'Haircuts & Styling':4, 'Color & Highlights':5, 'Relaxers & Perms':6, 'Blow-Outs & Sets':7, 'Deep Conditioning':8, 'Natural Hair Care':9 };
 
   function submitBooking(e) {

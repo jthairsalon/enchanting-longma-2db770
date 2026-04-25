@@ -5,9 +5,9 @@ const fromNumber = process.env.TWILIO_PHONE_NUMBER;
 const STYLIST_PHONES = {
   'John Gutierrez':   process.env.JOHN_PHONE      || '+13104875469',
   'Fernando Candela': process.env.FERNANDO_PHONE  || '+13103513475',
-  'Song':             process.env.SONG_PHONE       || '+13103730759',
-  'Zhanna':          process.env.ZHANNA_PHONE     || '+14243404979',
-  'Kelly':           process.env.KELLY_PHONE      || '+13103441676'
+  'Zhanna':           process.env.ZHANNA_PHONE    || '+14243404979',
+  'Kelly Wang':       process.env.KELLY_PHONE     || '+13103441676',
+  'Song':             process.env.SONG_PHONE      || '+13103730759',
 };
 
 exports.handler = async (event) => {
