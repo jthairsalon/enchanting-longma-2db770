@@ -1,0 +1,836 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: #07172E;
+        color: #F4F6FA;
+        font-family: "Fraunces", "Georgia", serif;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* ============ TYPE SYSTEM ============ */
+      .mono { font-family: "JetBrains Mono", "Menlo", monospace; }
+      .impact { font-family: "Archivo Black", "Arial Black", sans-serif; letter-spacing: -0.02em; }
+      .serif-italic { font-style: italic; font-weight: 300; }
+
+      /* ============ PALETTE ============ */
+      :root {
+        --navy-900: #07172E;
+        --navy-800: #0B1F3A;
+        --navy-700: #122A4A;
+        --line: rgba(244,246,250,0.10);
+        --ink: #F4F6FA;
+        --ink-dim: rgba(244,246,250,0.62);
+        --gold: #E6B86A;
+        --gold-dim: rgba(230,184,106,0.18);
+        --loss: #C1462C;
+      }
+
+      /* ============ SCENE FRAME ============ */
+      .scene {
+        position: absolute;
+        top: 0; left: 0;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: var(--navy-900);
+      }
+      #scene1 { z-index: 1; }
+      #scene2 { z-index: 2; }
+      #scene3 { z-index: 3; }
+      #scene4 { z-index: 4; }
+      #scene5 { z-index: 5; }
+      #scene6 { z-index: 6; }
+
+      /* ============ AMBIENT BACKGROUND ============ */
+      .bg-grid {
+        position: absolute; inset: 0;
+        background-image:
+          linear-gradient(to right, var(--line) 1px, transparent 1px),
+          linear-gradient(to bottom, var(--line) 1px, transparent 1px);
+        background-size: 90px 90px;
+        opacity: 0.55;
+        pointer-events: none;
+      }
+      .bg-glow {
+        position: absolute;
+        width: 1400px; height: 1400px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(230,184,106,0.22) 0%, rgba(230,184,106,0) 60%);
+        pointer-events: none;
+        filter: blur(20px);
+      }
+      .bg-glow.top-right { top: -400px; right: -500px; }
+      .bg-glow.bottom-left { bottom: -500px; left: -400px; background: radial-gradient(circle, rgba(193,70,44,0.22) 0%, rgba(193,70,44,0) 60%); }
+      .bg-glow.center { top: 50%; left: 50%; transform: translate(-50%, -50%); }
+
+      /* ============ FRAME HEADER + FOOTER ============ */
+      .frame-label {
+        position: absolute;
+        top: 90px;
+        left: 90px;
+        font-size: 22px;
+        letter-spacing: 0.32em;
+        color: var(--ink-dim);
+        text-transform: uppercase;
+      }
+      .frame-label .num { color: var(--gold); margin-right: 14px; }
+      .frame-label .bar {
+        display: inline-block;
+        width: 60px; height: 2px;
+        background: var(--gold);
+        vertical-align: middle;
+        margin-right: 18px;
+        transform-origin: left center;
+      }
+      .frame-footer {
+        position: absolute;
+        bottom: 90px;
+        left: 90px;
+        right: 90px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 20px;
+        letter-spacing: 0.28em;
+        color: var(--ink-dim);
+        text-transform: uppercase;
+      }
+      .frame-footer .brand { color: var(--ink); letter-spacing: 0.4em; font-weight: 500; }
+      .frame-footer .source { font-size: 18px; }
+
+      /* ============ SCENE 1 — SHOCK FRAMING ============ */
+      .s1-content {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        padding: 320px 90px 280px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 28px;
+      }
+      .s1-line { line-height: 0.95; letter-spacing: -0.03em; }
+      .s1-line.l1 { font-size: 240px; font-weight: 900; color: var(--gold); font-family: "Archivo Black", sans-serif; }
+      .s1-line.l2 { font-size: 110px; font-weight: 700; color: var(--ink); font-family: "Fraunces", serif; margin-top: 20px; line-height: 1.04; max-width: 920px; }
+      .s1-line.l3 { font-size: 70px; font-style: italic; font-weight: 300; color: var(--ink-dim); font-family: "Fraunces", serif; margin-top: 40px; line-height: 1.1; max-width: 880px; }
+      .s1-rule { position: absolute; bottom: 240px; left: 90px; width: 300px; height: 3px; background: var(--gold); transform-origin: left center; }
+      .s1-ekg {
+        position: absolute; bottom: 200px; left: 410px; right: 90px;
+        height: 30px;
+        display: flex; align-items: center;
+        font-family: "JetBrains Mono", monospace; font-size: 16px; color: var(--ink-dim);
+        letter-spacing: 0.2em;
+      }
+
+      /* ============ SCENE 2 — THE COST ============ */
+      .s2-stack {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        padding: 280px 90px 220px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
+      }
+      .s2-caption {
+        font-size: 36px;
+        color: var(--ink-dim);
+        font-family: "JetBrains Mono", monospace;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        margin-bottom: 30px;
+      }
+      .s2-counter {
+        font-family: "Archivo Black", sans-serif;
+        font-size: 280px;
+        color: var(--gold);
+        font-variant-numeric: tabular-nums;
+        letter-spacing: -0.04em;
+        line-height: 0.9;
+        text-shadow: 0 0 40px rgba(230,184,106,0.25);
+      }
+      .s2-counter-label {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 36px;
+        color: var(--ink);
+        letter-spacing: 0.32em;
+        text-transform: uppercase;
+        margin-top: 12px;
+      }
+      .s2-formula {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 30px;
+        color: var(--ink-dim);
+        margin-top: 30px;
+        letter-spacing: 0.06em;
+      }
+      .s2-formula .x { color: var(--gold); margin: 0 12px; }
+      .s2-grid {
+        margin-top: 70px;
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        grid-template-rows: repeat(4, 1fr);
+        gap: 14px;
+        width: 760px;
+        height: 320px;
+      }
+      .slot {
+        background: rgba(244,246,250,0.06);
+        border: 2px solid rgba(244,246,250,0.18);
+        border-radius: 6px;
+        display: flex; align-items: center; justify-content: center;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 18px;
+        color: var(--ink-dim);
+      }
+      .slot.empty {
+        background: rgba(193,70,44,0.18);
+        border-color: var(--loss);
+        color: var(--loss);
+      }
+      .slot.empty::after { content: "✕"; font-size: 28px; }
+
+      /* ============ SCENE 3 — SOLUTION 40-60% ============ */
+      .s3-content {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        padding: 300px 90px 280px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 30px;
+      }
+      .s3-kicker {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 32px;
+        color: var(--ink-dim);
+        letter-spacing: 0.4em;
+        text-transform: uppercase;
+      }
+      .s3-bignum {
+        font-family: "Archivo Black", sans-serif;
+        font-size: 380px;
+        color: var(--gold);
+        line-height: 0.85;
+        letter-spacing: -0.05em;
+        font-variant-numeric: tabular-nums;
+        text-shadow: 0 0 60px rgba(230,184,106,0.32);
+      }
+      .s3-arrow {
+        display: inline-block;
+        color: #4DBE6A;
+        font-size: 90px;
+        line-height: 1;
+        margin-right: 8px;
+        transform: rotate(135deg);
+        transform-origin: center;
+      }
+      .s3-bignum-row { display: flex; align-items: center; gap: 0; }
+      .s3-sublabel {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 30px;
+        color: var(--ink);
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+        margin-top: 6px;
+      }
+      .s3-headline {
+        font-family: "Fraunces", serif;
+        font-size: 88px;
+        font-weight: 700;
+        color: var(--ink);
+        line-height: 1.05;
+        letter-spacing: -0.025em;
+        text-align: center;
+        margin-top: 36px;
+      }
+      .s3-headline em { color: var(--gold); font-style: normal; }
+      .s3-tag {
+        font-family: "Fraunces", serif;
+        font-style: italic;
+        font-weight: 300;
+        font-size: 50px;
+        color: var(--ink-dim);
+        margin-top: 14px;
+      }
+
+      /* ============ SCENE 4 — STEPS ============ */
+      .s4-content {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        padding: 280px 90px 240px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        gap: 0;
+      }
+      .s4-headline {
+        font-family: "Fraunces", serif;
+        font-size: 64px;
+        font-weight: 700;
+        color: var(--ink);
+        margin-bottom: 50px;
+        line-height: 1.05;
+        letter-spacing: -0.02em;
+        max-width: 840px;
+      }
+      .s4-headline em { color: var(--gold); font-style: normal; }
+      .s4-step {
+        display: flex;
+        align-items: baseline;
+        gap: 30px;
+        padding: 26px 0 24px;
+        border-top: 1px solid var(--line);
+      }
+      .s4-step:last-of-type { border-bottom: 1px solid var(--line); }
+      .s4-step .n {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 32px;
+        color: var(--gold);
+        width: 70px;
+        flex-shrink: 0;
+        letter-spacing: 0.04em;
+      }
+      .s4-step .act {
+        font-family: "Archivo Black", sans-serif;
+        font-size: 58px;
+        color: var(--ink);
+        letter-spacing: -0.02em;
+        line-height: 1;
+      }
+      .s4-step .obj {
+        font-family: "Fraunces", serif;
+        font-style: italic;
+        font-weight: 300;
+        font-size: 44px;
+        color: var(--ink-dim);
+        line-height: 1.05;
+      }
+      .s4-tag {
+        font-family: "Fraunces", serif;
+        font-size: 42px;
+        font-weight: 500;
+        color: var(--ink);
+        margin-top: 50px;
+        line-height: 1.2;
+        max-width: 880px;
+        letter-spacing: -0.015em;
+      }
+      .s4-tag em { color: var(--gold); font-style: normal; }
+
+      /* ============ SCENE 5 — PAYOFF ============ */
+      .s5-content {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        padding: 280px 90px 240px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 0;
+      }
+      .s5-tier1 {
+        font-family: "Archivo Black", sans-serif;
+        font-size: 130px;
+        color: var(--ink);
+        line-height: 0.95;
+        letter-spacing: -0.03em;
+        font-variant-numeric: tabular-nums;
+        text-align: center;
+      }
+      .s5-tier1-label {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 26px;
+        color: var(--ink-dim);
+        letter-spacing: 0.32em;
+        text-transform: uppercase;
+        margin-top: 10px;
+        margin-bottom: 60px;
+      }
+      .s5-divider {
+        width: 2px; height: 80px;
+        background: var(--gold);
+        margin: 10px auto 30px;
+      }
+      .s5-counter {
+        font-family: "Archivo Black", sans-serif;
+        font-size: 280px;
+        color: var(--gold);
+        line-height: 0.88;
+        letter-spacing: -0.05em;
+        font-variant-numeric: tabular-nums;
+        text-shadow: 0 0 60px rgba(230,184,106,0.35);
+      }
+      .s5-counter-plus {
+        font-family: "Archivo Black", sans-serif;
+        font-size: 180px;
+        color: var(--gold);
+        vertical-align: top;
+      }
+      .s5-bigtag {
+        font-family: "Fraunces", serif;
+        font-style: italic;
+        font-weight: 300;
+        font-size: 48px;
+        color: var(--ink);
+        margin-top: 20px;
+        text-align: center;
+        max-width: 880px;
+        line-height: 1.2;
+      }
+      .s5-bigtag strong { font-style: normal; font-weight: 700; color: var(--gold); }
+
+      /* ============ SCENE 6 — CTA ============ */
+      .s6-content {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        padding: 280px 90px 240px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 24px;
+      }
+      .s6-brand {
+        font-family: "Archivo Black", sans-serif;
+        font-size: 78px;
+        color: var(--ink);
+        letter-spacing: -0.02em;
+        line-height: 1;
+        text-align: center;
+      }
+      .s6-brand em { color: var(--gold); font-style: normal; }
+      .s6-tag {
+        font-family: "Fraunces", serif;
+        font-style: italic;
+        font-weight: 300;
+        font-size: 44px;
+        color: var(--ink-dim);
+        margin-bottom: 80px;
+      }
+      .s6-url-rule {
+        width: 600px; height: 2px;
+        background: var(--gold);
+        margin: 0 auto 30px;
+      }
+      .s6-cta-mini {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 26px;
+        color: var(--ink-dim);
+        letter-spacing: 0.4em;
+        text-transform: uppercase;
+        margin-bottom: 18px;
+      }
+      .s6-url {
+        font-family: "Archivo Black", sans-serif;
+        font-size: 88px;
+        color: var(--gold);
+        letter-spacing: -0.02em;
+        line-height: 1.05;
+        text-align: center;
+        text-shadow: 0 0 40px rgba(230,184,106,0.3);
+      }
+      .s6-arrow {
+        font-family: "Archivo Black", sans-serif;
+        font-size: 70px;
+        color: var(--gold);
+        margin-top: 40px;
+      }
+      .s6-footer {
+        position: absolute;
+        bottom: 90px; left: 0; right: 0;
+        text-align: center;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 22px;
+        color: var(--ink-dim);
+        letter-spacing: 0.4em;
+        text-transform: uppercase;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="57"
+      data-width="1080"
+      data-height="1920"
+    >
+      <!-- ===== AUDIO ===== -->
+      <audio
+        id="vo"
+        data-start="0"
+        data-duration="55.4"
+        data-track-index="0"
+        src="assets/narration.wav"
+        data-volume="1"
+      ></audio>
+
+      <!-- ============ SCENE 1 — SHOCK FRAMING ============ -->
+      <div id="scene1" class="scene">
+        <div class="bg-grid"></div>
+        <div class="bg-glow top-right" id="s1-glow"></div>
+        <div class="frame-label" id="s1-label">
+          <span class="bar" id="s1-bar"></span>
+          <span class="num">01 /</span>
+          <span>No-Show Economics</span>
+        </div>
+        <div class="s1-content">
+          <div class="s1-line l1" id="s1-l1">No-shows</div>
+          <div class="s1-line l2" id="s1-l2">aren't a patient problem.</div>
+          <div class="s1-line l3" id="s1-l3">They're a workflow problem.</div>
+        </div>
+        <div class="s1-rule" id="s1-rule"></div>
+        <div class="s1-ekg" id="s1-ekg">
+          <span id="s1-ekg-text">— — ▲ — — — ▲ — — — — ▲ — — — ● LIVE • PRACTICE OPS</span>
+        </div>
+        <div class="frame-footer">
+          <div class="brand">INTELLIGENT VOICE AI</div>
+          <div class="source">Healthcare · Pain Pt 01 of 05</div>
+        </div>
+      </div>
+
+      <!-- ============ SCENE 2 — $14K COUNTER ============ -->
+      <div id="scene2" class="scene">
+        <div class="bg-grid"></div>
+        <div class="bg-glow center" id="s2-glow"></div>
+        <div class="frame-label">
+          <span class="bar"></span>
+          <span class="num">02 /</span>
+          <span>The Cost — One Month</span>
+        </div>
+        <div class="s2-stack">
+          <div class="s2-caption" id="s2-cap">3 PHYSICIANS · 20% NO-SHOW · ONE MONTH</div>
+          <div class="s2-counter" id="s2-counter">$0</div>
+          <div class="s2-counter-label" id="s2-counter-label">/ MONTH LOST</div>
+          <div class="s2-formula" id="s2-formula">
+            80 slots <span class="x">×</span> 20% <span class="x">×</span> $175 <span class="x">=</span> $14,000
+          </div>
+          <div class="s2-grid" id="s2-grid"></div>
+        </div>
+        <div class="frame-footer">
+          <div class="brand">INTELLIGENT VOICE AI</div>
+          <div class="source">Source: MGMA · AMA</div>
+        </div>
+      </div>
+
+      <!-- ============ SCENE 3 — SOLUTION ============ -->
+      <div id="scene3" class="scene">
+        <div class="bg-grid"></div>
+        <div class="bg-glow top-right" id="s3-glow"></div>
+        <div class="frame-label">
+          <span class="bar"></span>
+          <span class="num">03 /</span>
+          <span>The Fix</span>
+        </div>
+        <div class="s3-content">
+          <div class="s3-kicker" id="s3-kicker">REDUCTION IN NO-SHOWS</div>
+          <div class="s3-bignum-row">
+            <div class="s3-bignum" id="s3-bignum">40–60%</div>
+          </div>
+          <div class="s3-sublabel" id="s3-sublabel">↓ &nbsp; OBSERVED IN AI-REMINDED PRACTICES</div>
+          <div class="s3-headline" id="s3-headline">AI <em>reminder workflows.</em></div>
+          <div class="s3-tag" id="s3-tag">Zero added staff.</div>
+        </div>
+        <div class="frame-footer">
+          <div class="brand">INTELLIGENT VOICE AI</div>
+          <div class="source">Method: outbound voice + SMS</div>
+        </div>
+      </div>
+
+      <!-- ============ SCENE 4 — STEPS ============ -->
+      <div id="scene4" class="scene">
+        <div class="bg-grid"></div>
+        <div class="bg-glow bottom-left"></div>
+        <div class="frame-label">
+          <span class="bar"></span>
+          <span class="num">04 /</span>
+          <span>The Workflow</span>
+        </div>
+        <div class="s4-content">
+          <div class="s4-headline" id="s4-head">What the AI <em>actually does:</em></div>
+
+          <div class="s4-step" id="s4-step-1">
+            <div class="n">01</div>
+            <div>
+              <span class="act">CALLS</span>
+              <span class="obj">&nbsp;the patient</span>
+            </div>
+          </div>
+          <div class="s4-step" id="s4-step-2">
+            <div class="n">02</div>
+            <div>
+              <span class="act">CONFIRMS</span>
+              <span class="obj">&nbsp;the appointment</span>
+            </div>
+          </div>
+          <div class="s4-step" id="s4-step-3">
+            <div class="n">03</div>
+            <div>
+              <span class="act">OFFERS</span>
+              <span class="obj">&nbsp;to reschedule</span>
+            </div>
+          </div>
+          <div class="s4-step" id="s4-step-4">
+            <div class="n">04</div>
+            <div>
+              <span class="act">FILLS</span>
+              <span class="obj">&nbsp;the slot — automatically</span>
+            </div>
+          </div>
+
+          <div class="s4-tag" id="s4-tag">
+            Your front desk handles the <em>care</em>.<br/>Not the phone calls.
+          </div>
+        </div>
+        <div class="frame-footer">
+          <div class="brand">INTELLIGENT VOICE AI</div>
+          <div class="source">Runs 24 / 7 · HIPAA-aware</div>
+        </div>
+      </div>
+
+      <!-- ============ SCENE 5 — PAYOFF ============ -->
+      <div id="scene5" class="scene">
+        <div class="bg-grid"></div>
+        <div class="bg-glow center" id="s5-glow"></div>
+        <div class="frame-label">
+          <span class="bar"></span>
+          <span class="num">05 /</span>
+          <span>The Payoff</span>
+        </div>
+        <div class="s5-content">
+          <div class="s5-tier1" id="s5-tier1">$5K – $8K<span style="color:var(--gold);">/mo</span></div>
+          <div class="s5-tier1-label" id="s5-tier1-label">RECOVERED PER PHYSICIAN</div>
+
+          <div class="s5-divider" id="s5-divider"></div>
+
+          <div class="s5-counter-wrap">
+            <span class="s5-counter" id="s5-counter">$0</span><span class="s5-counter-plus" id="s5-plus">+</span>
+          </div>
+
+          <div class="s5-bigtag" id="s5-bigtag">
+            per practice / year<br/>
+            <strong>from one workflow change.</strong>
+          </div>
+        </div>
+        <div class="frame-footer">
+          <div class="brand">INTELLIGENT VOICE AI</div>
+          <div class="source">3-Physician Practice · Annualized</div>
+        </div>
+      </div>
+
+      <!-- ============ SCENE 6 — CTA ============ -->
+      <div id="scene6" class="scene">
+        <div class="bg-grid"></div>
+        <div class="bg-glow top-right"></div>
+        <div class="bg-glow bottom-left"></div>
+        <div class="s6-content">
+          <div class="s6-brand" id="s6-brand">INTELLIGENT <em>VOICE AI</em></div>
+          <div class="s6-tag" id="s6-tag">Healthcare practice automation.</div>
+
+          <div class="s6-url-rule" id="s6-rule"></div>
+          <div class="s6-cta-mini" id="s6-mini">See the reminder workflow →</div>
+          <div class="s6-url" id="s6-url">getivai.com<br/>/healthcare</div>
+          <div class="s6-arrow" id="s6-arrow">→</div>
+        </div>
+        <div class="s6-footer">Pain Point 01 of 05 · No-Shows · Healthcare Vertical</div>
+      </div>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      // ============ POPULATE CALENDAR GRID (Scene 2) ============
+      // 20 slots, 4 empty (red) at deterministic positions
+      (function buildGrid() {
+        const grid = document.getElementById("s2-grid");
+        // Deterministic "no-show" positions: 2, 7, 11, 16 (out of 20, 0-indexed)
+        const empties = new Set([2, 7, 11, 16]);
+        for (let i = 0; i < 20; i++) {
+          const slot = document.createElement("div");
+          slot.className = "slot" + (empties.has(i) ? " empty" : "");
+          slot.id = "slot-" + i;
+          if (!empties.has(i)) slot.textContent = ((i + 1) < 10 ? "0" + (i + 1) : (i + 1));
+          grid.appendChild(slot);
+        }
+      })();
+
+      // ============ COUNTER UTILITY ============
+      function counter(selector, fromVal, toVal, startTime, duration, format) {
+        const obj = { v: fromVal };
+        const el = document.querySelector(selector);
+        if (!el) return;
+        tl.to(obj, {
+          v: toVal,
+          duration: duration,
+          ease: "power2.out",
+          onUpdate: function () {
+            el.textContent = format(obj.v);
+          },
+        }, startTime);
+      }
+
+      function fmtUSD(v) {
+        return "$" + Math.round(v).toLocaleString("en-US");
+      }
+      function fmtUSDK(v) {
+        if (v >= 1000) return "$" + (Math.round(v / 100) / 10).toFixed(1).replace(/\.0$/, "") + "K";
+        return "$" + Math.round(v);
+      }
+
+      // ====================================================================
+      // SCENE 1 (0 – 8.5s) ENTRANCES
+      // ====================================================================
+      tl.from("#s1-label", { x: -120, opacity: 0, duration: 0.7, ease: "power3.out" }, 0.3);
+      tl.from("#s1-bar", { scaleX: 0, duration: 0.5, ease: "expo.out" }, 0.5);
+      tl.from("#s1-l1", { y: 80, opacity: 0, duration: 0.9, ease: "power4.out" }, 0.6);
+      tl.from("#s1-l1", { scale: 1.08, duration: 1.2, ease: "sine.out" }, 0.6);
+      tl.from("#s1-l2", { y: 50, opacity: 0, duration: 0.7, ease: "power3.out" }, 1.2);
+      tl.from("#s1-l3", { y: 30, opacity: 0, duration: 0.9, ease: "power2.out" }, 2.1);
+      tl.from("#s1-rule", { scaleX: 0, duration: 0.6, ease: "expo.out" }, 2.4);
+      tl.from("#s1-ekg", { x: 60, opacity: 0, duration: 0.8, ease: "power2.out" }, 2.8);
+      tl.from(".frame-footer", { opacity: 0, duration: 0.6, ease: "sine.out" }, 1.8);
+      // Ambient breathe on glow
+      tl.to("#s1-glow", { scale: 1.08, duration: 5, ease: "sine.inOut", yoyo: true, repeat: 1 }, 1);
+
+      // ====================================================================
+      // TRANSITION 1 → 2: vertical push at 8.5s (0.45s)
+      // ====================================================================
+      const T1 = 8.5;
+      tl.to("#scene1", { y: -1920, duration: 0.45, ease: "power3.inOut" }, T1);
+      tl.fromTo("#scene2", { y: 1920 }, { y: 0, duration: 0.45, ease: "power3.inOut", immediateRender: true }, T1);
+
+      // ====================================================================
+      // SCENE 2 (8.95 – 19.5s) — Counter $0 → $14,000 + calendar grid
+      // ====================================================================
+      tl.from("#scene2 .frame-label", { x: -120, opacity: 0, duration: 0.6, ease: "power3.out" }, T1 + 0.55);
+      tl.from("#s2-cap", { y: 30, opacity: 0, duration: 0.6, ease: "power2.out" }, T1 + 0.7);
+      tl.from("#s2-counter", { scale: 0.85, opacity: 0, duration: 0.7, ease: "back.out(1.4)" }, T1 + 1.0);
+      tl.from("#s2-counter-label", { y: 20, opacity: 0, duration: 0.5, ease: "power2.out" }, T1 + 1.5);
+      // Counter animation $0 → $14,200 over 3s starting at T1+1.0
+      counter("#s2-counter", 0, 14200, T1 + 1.0, 3.0, fmtUSD);
+      // Formula
+      tl.from("#s2-formula", { opacity: 0, y: 20, duration: 0.6, ease: "power2.out" }, T1 + 4.2);
+      // Grid: all slots fade in fast, then red ones pulse
+      const allSlots = [];
+      for (let i = 0; i < 20; i++) allSlots.push("#slot-" + i);
+      tl.from(allSlots, {
+        opacity: 0, scale: 0.6, duration: 0.45, ease: "back.out(1.6)",
+        stagger: { each: 0.025, from: "start" }
+      }, T1 + 4.9);
+      // Pulse the empty (red) slots
+      const reds = ["#slot-2", "#slot-7", "#slot-11", "#slot-16"];
+      tl.to(reds, {
+        scale: 1.12, duration: 0.3, ease: "power2.out",
+        stagger: { each: 0.12, from: "start" }
+      }, T1 + 6.0);
+      tl.to(reds, {
+        scale: 1, duration: 0.4, ease: "sine.inOut",
+        stagger: { each: 0.12, from: "start" }
+      }, T1 + 6.5);
+      // Footer
+      tl.from("#scene2 .frame-footer", { opacity: 0, duration: 0.6, ease: "sine.out" }, T1 + 1.4);
+
+      // ====================================================================
+      // TRANSITION 2 → 3 at 19.5s — Vertical push
+      // ====================================================================
+      const T2 = 19.5;
+      tl.to("#scene2", { y: -1920, duration: 0.45, ease: "power3.inOut", overwrite: "auto" }, T2);
+      tl.fromTo("#scene3", { y: 1920 }, { y: 0, duration: 0.45, ease: "power3.inOut", immediateRender: true }, T2);
+
+      // ====================================================================
+      // SCENE 3 (19.95 – 29s) — 40-60% reveal
+      // ====================================================================
+      tl.from("#scene3 .frame-label", { x: -120, opacity: 0, duration: 0.6, ease: "power3.out" }, T2 + 0.55);
+      tl.from("#s3-kicker", { y: 30, opacity: 0, duration: 0.6, ease: "power2.out" }, T2 + 0.8);
+      tl.from("#s3-bignum", { scale: 0.6, opacity: 0, duration: 0.9, ease: "back.out(1.5)" }, T2 + 1.1);
+      tl.from("#s3-sublabel", { x: -30, opacity: 0, duration: 0.6, ease: "power2.out" }, T2 + 1.9);
+      tl.from("#s3-headline", { y: 40, opacity: 0, duration: 0.7, ease: "power3.out" }, T2 + 2.4);
+      tl.from("#s3-tag", { opacity: 0, scale: 0.95, duration: 0.7, ease: "power2.out" }, T2 + 3.0);
+      tl.from("#scene3 .frame-footer", { opacity: 0, duration: 0.5, ease: "sine.out" }, T2 + 1.4);
+      // Subtle ambient pulse on big number's glow
+      tl.to("#s3-bignum", { textShadow: "0 0 90px rgba(230,184,106,0.55)", duration: 1.4, ease: "sine.inOut", yoyo: true, repeat: 3 }, T2 + 3.5);
+
+      // ====================================================================
+      // TRANSITION 3 → 4 at 29s
+      // ====================================================================
+      const T3 = 29;
+      tl.to("#scene3", { y: -1920, duration: 0.45, ease: "power3.inOut", overwrite: "auto" }, T3);
+      tl.fromTo("#scene4", { y: 1920 }, { y: 0, duration: 0.45, ease: "power3.inOut", immediateRender: true }, T3);
+
+      // ====================================================================
+      // SCENE 4 (29.45 – 41s) — 4 steps
+      // ====================================================================
+      tl.from("#scene4 .frame-label", { x: -120, opacity: 0, duration: 0.6, ease: "power3.out" }, T3 + 0.55);
+      tl.from("#s4-head", { y: 40, opacity: 0, duration: 0.6, ease: "power3.out" }, T3 + 0.8);
+      // Steps stagger in to match VO cadence: AI calls / confirms / offers / fills (~2.5s each)
+      const stepDelays = [1.6, 4.0, 6.2, 8.4];
+      stepDelays.forEach((d, i) => {
+        const id = "#s4-step-" + (i + 1);
+        tl.from(id, { x: -80, opacity: 0, duration: 0.55, ease: "expo.out" }, T3 + d);
+        tl.from(id + " .n", { scale: 0.5, opacity: 0, duration: 0.4, ease: "back.out(1.7)" }, T3 + d + 0.05);
+      });
+      tl.from("#s4-tag", { y: 30, opacity: 0, duration: 0.7, ease: "power2.out" }, T3 + 10.6);
+      tl.from("#scene4 .frame-footer", { opacity: 0, duration: 0.5, ease: "sine.out" }, T3 + 1.4);
+
+      // ====================================================================
+      // TRANSITION 4 → 5 at 41s
+      // ====================================================================
+      const T4 = 41;
+      tl.to("#scene4", { y: -1920, duration: 0.45, ease: "power3.inOut", overwrite: "auto" }, T4);
+      tl.fromTo("#scene5", { y: 1920 }, { y: 0, duration: 0.45, ease: "power3.inOut", immediateRender: true }, T4);
+
+      // ====================================================================
+      // SCENE 5 (41.45 – 52s) — Payoff $100K counter
+      // ====================================================================
+      tl.from("#scene5 .frame-label", { x: -120, opacity: 0, duration: 0.6, ease: "power3.out" }, T4 + 0.55);
+      tl.from("#s5-tier1", { y: 40, opacity: 0, duration: 0.7, ease: "power3.out" }, T4 + 0.8);
+      tl.from("#s5-tier1-label", { y: 20, opacity: 0, duration: 0.5, ease: "power2.out" }, T4 + 1.3);
+      tl.from("#s5-divider", { scaleY: 0, transformOrigin: "top center", duration: 0.5, ease: "expo.out" }, T4 + 2.5);
+      tl.from("#s5-counter", { scale: 0.7, opacity: 0, duration: 0.7, ease: "back.out(1.5)" }, T4 + 3.0);
+      tl.from("#s5-plus", { scale: 0, opacity: 0, duration: 0.4, ease: "back.out(1.8)" }, T4 + 6.0);
+      // Counter $0 → $100,000 over 3s starting at T4+3.0
+      counter("#s5-counter", 0, 100000, T4 + 3.0, 3.0, fmtUSD);
+      tl.from("#s5-bigtag", { opacity: 0, y: 30, duration: 0.7, ease: "power2.out" }, T4 + 6.5);
+      tl.from("#scene5 .frame-footer", { opacity: 0, duration: 0.5, ease: "sine.out" }, T4 + 1.6);
+
+      // ====================================================================
+      // TRANSITION 5 → 6 at 52s — Push slide
+      // ====================================================================
+      const T5 = 52;
+      tl.to("#scene5", { y: -1920, duration: 0.5, ease: "power3.inOut", overwrite: "auto" }, T5);
+      tl.fromTo("#scene6", { y: 1920 }, { y: 0, duration: 0.5, ease: "power3.inOut", immediateRender: true }, T5);
+
+      // ====================================================================
+      // SCENE 6 (52.5 – 57s) — CTA
+      // ====================================================================
+      tl.from("#s6-brand", { y: 40, opacity: 0, duration: 0.7, ease: "power3.out" }, T5 + 0.6);
+      tl.from("#s6-tag", { opacity: 0, duration: 0.6, ease: "sine.out" }, T5 + 1.0);
+      tl.from("#s6-rule", { scaleX: 0, duration: 0.6, ease: "expo.out" }, T5 + 1.4);
+      tl.from("#s6-mini", { opacity: 0, y: 16, duration: 0.5, ease: "power2.out" }, T5 + 1.5);
+      tl.from("#s6-url", { scale: 0.9, opacity: 0, duration: 0.7, ease: "back.out(1.3)" }, T5 + 1.8);
+      tl.fromTo("#s6-arrow", { x: -40, opacity: 0 }, { x: 0, opacity: 1, duration: 0.6, ease: "expo.out", immediateRender: true }, T5 + 2.4);
+      tl.from(".s6-footer", { opacity: 0, duration: 0.5, ease: "sine.out" }, T5 + 1.6);
+      tl.to("#s6-arrow", { x: 20, duration: 0.8, ease: "sine.inOut", yoyo: true, repeat: 2, overwrite: "auto" }, T5 + 3.4);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
