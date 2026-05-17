@@ -266,70 +266,223 @@
         margin-top: 14px;
       }
 
-      /* ============ SCENE 4 — STEPS ============ */
-      .s4-content {
+      /* ============ SCENE 4 — CINEMATIC WORKFLOW (sub-scenes) ============ */
+      .s4-sub {
         position: absolute;
         top: 0; left: 0;
         width: 100%; height: 100%;
-        padding: 280px 90px 240px;
         display: flex;
         flex-direction: column;
-        justify-content: flex-start;
-        gap: 0;
+        justify-content: center;
+        align-items: center;
+        padding: 280px 90px 240px;
+        opacity: 0;
+        pointer-events: none;
       }
-      .s4-headline {
-        font-family: "Fraunces", serif;
-        font-size: 64px;
-        font-weight: 700;
-        color: var(--ink);
-        margin-bottom: 50px;
-        line-height: 1.05;
-        letter-spacing: -0.02em;
-        max-width: 840px;
-      }
-      .s4-headline em { color: var(--gold); font-style: normal; }
-      .s4-step {
-        display: flex;
-        align-items: baseline;
-        gap: 30px;
-        padding: 26px 0 24px;
-        border-top: 1px solid var(--line);
-      }
-      .s4-step:last-of-type { border-bottom: 1px solid var(--line); }
-      .s4-step .n {
+      .s4-sub.show { opacity: 1; }
+
+      .s4-kicker {
         font-family: "JetBrains Mono", monospace;
-        font-size: 32px;
-        color: var(--gold);
-        width: 70px;
-        flex-shrink: 0;
-        letter-spacing: 0.04em;
+        font-size: 28px;
+        color: var(--ink-dim);
+        letter-spacing: 0.4em;
+        text-transform: uppercase;
+        margin-bottom: 30px;
       }
-      .s4-step .act {
+      .s4-kicker .num { color: var(--gold); margin-right: 14px; }
+      .s4-verb {
         font-family: "Archivo Black", sans-serif;
-        font-size: 58px;
-        color: var(--ink);
-        letter-spacing: -0.02em;
-        line-height: 1;
+        font-size: 260px;
+        color: var(--gold);
+        line-height: 0.88;
+        letter-spacing: -0.04em;
+        text-shadow: 0 0 50px rgba(230,184,106,0.28);
+        text-align: center;
       }
-      .s4-step .obj {
+      .s4-obj {
         font-family: "Fraunces", serif;
         font-style: italic;
         font-weight: 300;
-        font-size: 44px;
-        color: var(--ink-dim);
-        line-height: 1.05;
-      }
-      .s4-tag {
-        font-family: "Fraunces", serif;
-        font-size: 42px;
-        font-weight: 500;
+        font-size: 56px;
         color: var(--ink);
-        margin-top: 50px;
-        line-height: 1.2;
-        max-width: 880px;
+        margin-top: 28px;
+        text-align: center;
+      }
+
+      /* ---- 4a CALLS: voice rings ---- */
+      .ring-stage {
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        width: 900px; height: 900px;
+        pointer-events: none;
+      }
+      .ring {
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        width: 240px; height: 240px;
+        border-radius: 50%;
+        border: 3px solid var(--gold);
+        opacity: 0;
+      }
+
+      /* ---- 4b CONFIRMS: appointment card with checkmark ---- */
+      .appt-card {
+        background: rgba(244,246,250,0.04);
+        border: 2px solid var(--line);
+        border-radius: 12px;
+        padding: 48px 56px;
+        width: 760px;
+        position: relative;
+        margin-top: 24px;
+      }
+      .appt-time {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 30px;
+        color: var(--ink-dim);
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+      }
+      .appt-name {
+        font-family: "Fraunces", serif;
+        font-size: 48px;
+        color: var(--ink);
+        font-weight: 500;
+        line-height: 1.15;
+        margin-top: 14px;
         letter-spacing: -0.015em;
       }
-      .s4-tag em { color: var(--gold); font-style: normal; }
+      .appt-check {
+        position: absolute;
+        right: 56px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 110px;
+        height: 110px;
+      }
+      .appt-check svg {
+        width: 100%; height: 100%;
+        stroke: var(--gold);
+        stroke-width: 8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        fill: none;
+      }
+      .appt-check .ring-bg {
+        stroke: rgba(230,184,106,0.25);
+        stroke-width: 4;
+      }
+      .check-path { stroke-dasharray: 200; stroke-dashoffset: 200; }
+
+      /* ---- 4c OFFERS: date flip ---- */
+      .date-stage {
+        display: flex;
+        align-items: center;
+        gap: 30px;
+        margin-top: 28px;
+      }
+      .date-chip {
+        font-family: "Archivo Black", sans-serif;
+        font-size: 72px;
+        color: var(--ink);
+        padding: 20px 38px;
+        background: rgba(244,246,250,0.05);
+        border: 2px solid var(--line);
+        border-radius: 10px;
+        position: relative;
+        letter-spacing: -0.02em;
+      }
+      .date-chip.old { color: var(--ink-dim); }
+      .date-chip.old .strike {
+        position: absolute;
+        top: 50%; left: 12%;
+        width: 76%; height: 5px;
+        background: var(--loss);
+        transform: translateY(-50%) scaleX(0);
+        transform-origin: left center;
+      }
+      .date-chip.new {
+        color: var(--gold);
+        border-color: var(--gold);
+        background: rgba(230,184,106,0.10);
+      }
+      .date-arrow {
+        font-family: "Archivo Black", sans-serif;
+        color: var(--gold);
+        font-size: 56px;
+      }
+
+      /* ---- 4d FILLS: mini slot grid ---- */
+      .mini-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        grid-template-rows: repeat(4, 1fr);
+        gap: 12px;
+        width: 600px;
+        height: 260px;
+        margin-top: 30px;
+      }
+      .mini-slot {
+        background: rgba(244,246,250,0.06);
+        border: 2px solid rgba(244,246,250,0.18);
+        border-radius: 6px;
+        display: flex; align-items: center; justify-content: center;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 16px;
+        color: var(--ink-dim);
+      }
+      .mini-slot.was-empty {
+        background: rgba(193,70,44,0.18);
+        border-color: var(--loss);
+        color: var(--loss);
+      }
+      .mini-slot.was-empty::after { content: "✕"; font-size: 22px; }
+      .mini-slot.filled {
+        background: rgba(230,184,106,0.18);
+        border-color: var(--gold);
+        color: var(--gold);
+      }
+      .mini-slot.filled::after { content: "✓"; font-size: 24px; }
+
+      /* ---- 4e CARE tag: split frame ---- */
+      .s4-care-top {
+        font-family: "Fraunces", serif;
+        font-size: 88px;
+        font-weight: 500;
+        color: var(--ink);
+        text-align: center;
+        line-height: 1.05;
+        max-width: 880px;
+        letter-spacing: -0.02em;
+      }
+      .s4-care-top em { font-style: normal; color: var(--gold); }
+      .s4-care-rule {
+        width: 200px; height: 3px;
+        background: var(--gold);
+        margin: 50px auto 40px;
+        transform-origin: center;
+      }
+      .s4-care-strike-wrap {
+        position: relative;
+        display: inline-block;
+      }
+      .s4-care-strike-wrap .strikeline {
+        position: absolute;
+        top: 52%; left: -4%;
+        width: 108%; height: 6px;
+        background: var(--loss);
+        transform: translateY(-50%) scaleX(0);
+        transform-origin: left center;
+      }
+      .s4-care-bottom {
+        font-family: "Archivo Black", sans-serif;
+        font-size: 64px;
+        color: var(--ink-dim);
+        text-align: center;
+        letter-spacing: -0.02em;
+        line-height: 1.1;
+      }
 
       /* ============ SCENE 5 — PAYOFF ============ */
       .s5-content {
@@ -563,40 +716,68 @@
           <span class="num">04 /</span>
           <span>The Workflow</span>
         </div>
-        <div class="s4-content">
-          <div class="s4-headline" id="s4-head">What the AI <em>actually does:</em></div>
+        <!-- 4a CALLS — voice rings -->
+        <div class="s4-sub" id="s4a">
+          <div class="ring-stage" id="s4a-rings">
+            <div class="ring" id="ring-1"></div>
+            <div class="ring" id="ring-2"></div>
+            <div class="ring" id="ring-3"></div>
+            <div class="ring" id="ring-4"></div>
+          </div>
+          <div class="s4-kicker"><span class="num">01 /</span>OUTBOUND VOICE</div>
+          <div class="s4-verb" id="s4a-verb">CALLS</div>
+          <div class="s4-obj">the patient.</div>
+        </div>
 
-          <div class="s4-step" id="s4-step-1">
-            <div class="n">01</div>
-            <div>
-              <span class="act">CALLS</span>
-              <span class="obj">&nbsp;the patient</span>
+        <!-- 4b CONFIRMS — appointment card + check -->
+        <div class="s4-sub" id="s4b">
+          <div class="s4-kicker"><span class="num">02 /</span>STATUS UPDATE</div>
+          <div class="s4-verb" id="s4b-verb">CONFIRMS</div>
+          <div class="appt-card" id="s4b-card">
+            <div class="appt-time">TUE · OCT 22 · 2:30 PM</div>
+            <div class="appt-name">Annual physical — Dr. Chen</div>
+            <div class="appt-check">
+              <svg viewBox="0 0 100 100">
+                <circle class="ring-bg" cx="50" cy="50" r="44" />
+                <path class="check-path" d="M28 52 L46 70 L74 36" />
+              </svg>
             </div>
           </div>
-          <div class="s4-step" id="s4-step-2">
-            <div class="n">02</div>
-            <div>
-              <span class="act">CONFIRMS</span>
-              <span class="obj">&nbsp;the appointment</span>
-            </div>
-          </div>
-          <div class="s4-step" id="s4-step-3">
-            <div class="n">03</div>
-            <div>
-              <span class="act">OFFERS</span>
-              <span class="obj">&nbsp;to reschedule</span>
-            </div>
-          </div>
-          <div class="s4-step" id="s4-step-4">
-            <div class="n">04</div>
-            <div>
-              <span class="act">FILLS</span>
-              <span class="obj">&nbsp;the slot — automatically</span>
-            </div>
-          </div>
+        </div>
 
-          <div class="s4-tag" id="s4-tag">
-            Your front desk handles the <em>care</em>.<br/>Not the phone calls.
+        <!-- 4c OFFERS — date flip -->
+        <div class="s4-sub" id="s4c">
+          <div class="s4-kicker"><span class="num">03 /</span>IF NEEDED</div>
+          <div class="s4-verb" id="s4c-verb">OFFERS</div>
+          <div class="date-stage">
+            <div class="date-chip old" id="s4c-old">
+              OCT 22
+              <span class="strike" id="s4c-strike"></span>
+            </div>
+            <div class="date-arrow" id="s4c-arrow">→</div>
+            <div class="date-chip new" id="s4c-new">OCT 24</div>
+          </div>
+          <div class="s4-obj">to reschedule.</div>
+        </div>
+
+        <!-- 4d FILLS — slot grid -->
+        <div class="s4-sub" id="s4d">
+          <div class="s4-kicker"><span class="num">04 /</span>AUTOMATICALLY</div>
+          <div class="s4-verb" id="s4d-verb">FILLS</div>
+          <div class="mini-grid" id="s4d-grid"></div>
+          <div class="s4-obj" style="margin-top: 32px;">every empty slot.</div>
+        </div>
+
+        <!-- 4e CARE tag — split frame -->
+        <div class="s4-sub" id="s4e">
+          <div class="s4-care-top" id="s4e-top">
+            Your front desk handles<br/>the <em>care.</em>
+          </div>
+          <div class="s4-care-rule" id="s4e-rule"></div>
+          <div class="s4-care-bottom">
+            <span class="s4-care-strike-wrap">
+              NOT THE PHONE CALLS<span class="strikeline" id="s4e-strike"></span>
+            </span>
           </div>
         </div>
         <div class="frame-footer">
@@ -657,17 +838,26 @@
       window.__timelines = window.__timelines || {};
       const tl = gsap.timeline({ paused: true });
 
-      // ============ POPULATE CALENDAR GRID (Scene 2) ============
-      // 20 slots, 4 empty (red) at deterministic positions
-      (function buildGrid() {
+      // ============ POPULATE CALENDAR GRIDS ============
+      const EMPTIES = new Set([2, 7, 11, 16]); // shared no-show positions
+      // Scene 2 grid (large) — initial empties are red, never change in scene 2
+      (function buildS2Grid() {
         const grid = document.getElementById("s2-grid");
-        // Deterministic "no-show" positions: 2, 7, 11, 16 (out of 20, 0-indexed)
-        const empties = new Set([2, 7, 11, 16]);
         for (let i = 0; i < 20; i++) {
           const slot = document.createElement("div");
-          slot.className = "slot" + (empties.has(i) ? " empty" : "");
+          slot.className = "slot" + (EMPTIES.has(i) ? " empty" : "");
           slot.id = "slot-" + i;
-          if (!empties.has(i)) slot.textContent = ((i + 1) < 10 ? "0" + (i + 1) : (i + 1));
+          if (!EMPTIES.has(i)) slot.textContent = ((i + 1) < 10 ? "0" + (i + 1) : (i + 1));
+          grid.appendChild(slot);
+        }
+      })();
+      // Scene 4d grid (mini) — starts red on empties; GSAP converts to .filled (gold)
+      (function buildS4dGrid() {
+        const grid = document.getElementById("s4d-grid");
+        for (let i = 0; i < 20; i++) {
+          const slot = document.createElement("div");
+          slot.className = "mini-slot" + (EMPTIES.has(i) ? " was-empty" : "");
+          if (!EMPTIES.has(i)) slot.textContent = ((i + 1) < 10 ? "0" + (i + 1) : (i + 1));
           grid.appendChild(slot);
         }
       })();
@@ -776,19 +966,90 @@
       tl.fromTo("#scene4", { y: 1920 }, { y: 0, duration: 0.45, ease: "power3.inOut", immediateRender: true }, T3);
 
       // ====================================================================
-      // SCENE 4 (29.45 – 41s) — 4 steps
+      // SCENE 4 (29.45 – 41s) — 5 cinematic sub-scenes
       // ====================================================================
       tl.from("#scene4 .frame-label", { x: -120, opacity: 0, duration: 0.6, ease: "power3.out" }, T3 + 0.55);
-      tl.from("#s4-head", { y: 40, opacity: 0, duration: 0.6, ease: "power3.out" }, T3 + 0.8);
-      // Steps stagger in to match VO cadence: AI calls / confirms / offers / fills (~2.5s each)
-      const stepDelays = [1.6, 4.0, 6.2, 8.4];
-      stepDelays.forEach((d, i) => {
-        const id = "#s4-step-" + (i + 1);
-        tl.from(id, { x: -80, opacity: 0, duration: 0.55, ease: "expo.out" }, T3 + d);
-        tl.from(id + " .n", { scale: 0.5, opacity: 0, duration: 0.4, ease: "back.out(1.7)" }, T3 + d + 0.05);
-      });
-      tl.from("#s4-tag", { y: 30, opacity: 0, duration: 0.7, ease: "power2.out" }, T3 + 10.6);
       tl.from("#scene4 .frame-footer", { opacity: 0, duration: 0.5, ease: "sine.out" }, T3 + 1.4);
+
+      // Sub-scene boundaries (absolute timeline seconds)
+      const S4 = {
+        a: 29.5,   // CALLS
+        b: 31.8,   // CONFIRMS
+        c: 34.1,   // OFFERS
+        d: 36.4,   // FILLS
+        e: 38.7,   // CARE tag
+        end: 41,
+      };
+      const SUB_FADE = 0.28;
+
+      // Helper: cross-fade sub-scene IN at time `t`, OUT 0.28s before next
+      function subShow(id, tIn, tOut) {
+        tl.fromTo(id, { opacity: 0, y: 40 },
+          { opacity: 1, y: 0, duration: SUB_FADE + 0.05, ease: "power3.out", immediateRender: false }, tIn);
+        tl.to(id, { opacity: 0, y: -30, duration: SUB_FADE, ease: "power3.in", overwrite: "auto" }, tOut - SUB_FADE);
+      }
+      subShow("#s4a", S4.a, S4.b);
+      subShow("#s4b", S4.b, S4.c);
+      subShow("#s4c", S4.c, S4.d);
+      subShow("#s4d", S4.d, S4.e);
+      subShow("#s4e", S4.e, S4.end);
+
+      // ---- 4a CALLS: emanating voice rings + verb pop ----
+      tl.from("#s4a-verb", { scale: 0.85, opacity: 0, duration: 0.45, ease: "back.out(1.6)" }, S4.a + 0.15);
+      // 4 rings emanating in sequence, looping during the hold
+      const ringIds = ["#ring-1", "#ring-2", "#ring-3", "#ring-4"];
+      const ringStart = S4.a + 0.3;
+      const ringCycle = 0.55;
+      const ringDur = 1.3;
+      const ringHold = S4.b - 0.2 - ringStart;
+      const ringRepeats = Math.max(1, Math.ceil(ringHold / (ringCycle * ringIds.length)));
+      ringIds.forEach((id, i) => {
+        for (let r = 0; r < ringRepeats; r++) {
+          const t = ringStart + i * ringCycle + r * ringCycle * ringIds.length;
+          if (t + ringDur > S4.b - 0.05) break;
+          tl.fromTo(id,
+            { scale: 0.1, opacity: 0.75 },
+            { scale: 3.2, opacity: 0, duration: ringDur, ease: "power2.out" },
+            t);
+        }
+      });
+
+      // ---- 4b CONFIRMS: card scale-in + checkmark draw ----
+      tl.from("#s4b-verb", { y: 30, opacity: 0, duration: 0.4, ease: "power3.out" }, S4.b + 0.15);
+      tl.from("#s4b-card", { scale: 0.92, opacity: 0, duration: 0.5, ease: "back.out(1.3)" }, S4.b + 0.4);
+      tl.to("#s4b .check-path", { strokeDashoffset: 0, duration: 0.7, ease: "power2.out" }, S4.b + 0.9);
+
+      // ---- 4c OFFERS: date strike then new date pop ----
+      tl.from("#s4c-verb", { y: 30, opacity: 0, duration: 0.4, ease: "power3.out" }, S4.c + 0.15);
+      tl.from("#s4c-old", { scale: 0.9, opacity: 0, duration: 0.4, ease: "power3.out" }, S4.c + 0.4);
+      tl.to("#s4c-strike", { scaleX: 1, duration: 0.35, ease: "power2.inOut" }, S4.c + 0.95);
+      tl.from("#s4c-arrow", { x: -30, opacity: 0, duration: 0.35, ease: "expo.out" }, S4.c + 1.25);
+      tl.from("#s4c-new", { x: 80, opacity: 0, scale: 0.92, duration: 0.55, ease: "back.out(1.6)" }, S4.c + 1.4);
+
+      // ---- 4d FILLS: empty slots → filled (gold) ----
+      tl.from("#s4d-verb", { y: 30, opacity: 0, duration: 0.4, ease: "power3.out" }, S4.d + 0.15);
+      tl.from("#s4d-grid > *", {
+        opacity: 0, scale: 0.7, duration: 0.35, ease: "back.out(1.5)",
+        stagger: { each: 0.018, from: "start" }
+      }, S4.d + 0.4);
+      // Convert was-empty → filled, staggered, after the grid is visible
+      const fillTimes = [0, 0.18, 0.36, 0.54];
+      const fillBase = S4.d + 1.0;
+      fillTimes.forEach((dt, i) => {
+        tl.call(function () {
+          const els = document.querySelectorAll("#s4d-grid .was-empty");
+          if (els[0]) {
+            els[0].classList.remove("was-empty");
+            els[0].classList.add("filled");
+          }
+        }, [], fillBase + dt);
+      });
+
+      // ---- 4e CARE tag: split frame with strike ----
+      tl.from("#s4e-top", { y: 40, opacity: 0, duration: 0.6, ease: "power3.out" }, S4.e + 0.15);
+      tl.from("#s4e-rule", { scaleX: 0, duration: 0.45, ease: "expo.out" }, S4.e + 0.6);
+      tl.from("#s4e .s4-care-bottom", { y: 30, opacity: 0, duration: 0.5, ease: "power3.out" }, S4.e + 0.75);
+      tl.to("#s4e-strike", { scaleX: 1, duration: 0.45, ease: "power2.inOut" }, S4.e + 1.4);
 
       // ====================================================================
       // TRANSITION 4 → 5 at 41s
