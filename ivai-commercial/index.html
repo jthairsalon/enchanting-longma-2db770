@@ -1,0 +1,628 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #F4F8FF;
+        color: #0B1F3A;
+        font-family: "Inter", "Manrope", "Helvetica Neue", sans-serif;
+        -webkit-font-smoothing: antialiased;
+        font-feature-settings: "ss01", "cv02";
+      }
+
+      :root {
+        --ink: #0B1F3A;
+        --ink-dim: #4A5B73;
+        --ink-soft: #7B8AA0;
+        --line: rgba(11,31,58,0.08);
+        --line-strong: rgba(11,31,58,0.14);
+        --bg: #F4F8FF;
+        --bg-pure: #FFFFFF;
+        --bg-tint: #E8F0FF;
+        --blue: #1A53F0;
+        --blue-2: #2B7DFF;
+        --blue-glow: rgba(26,83,240,0.18);
+        --green: #2BC56C;
+        --green-2: #1FA85A;
+        --green-glow: rgba(43,197,108,0.20);
+        --red: #E33A4C;
+      }
+
+      .mono { font-family: "JetBrains Mono", "Menlo", monospace; }
+
+      .scene {
+        position: absolute;
+        top: 0; left: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--bg);
+        opacity: 0;
+      }
+      #scene1 { z-index: 1; }
+      #scene2 { z-index: 2; background: #000; }
+      #scene3 { z-index: 3; }
+      #scene4 { z-index: 4; }
+      #scene5 { z-index: 5; }
+      #scene6 { z-index: 6; }
+
+      /* ============ BACKGROUND TREATMENTS ============ */
+      .bg-grid {
+        position: absolute; inset: 0;
+        background-image:
+          linear-gradient(to right, var(--line) 1px, transparent 1px),
+          linear-gradient(to bottom, var(--line) 1px, transparent 1px);
+        background-size: 80px 80px;
+        opacity: 0.7;
+        pointer-events: none;
+      }
+      .bg-glow-blue {
+        position: absolute;
+        width: 1600px; height: 1600px;
+        border-radius: 50%;
+        background: radial-gradient(circle, var(--blue-glow) 0%, rgba(26,83,240,0) 60%);
+        pointer-events: none;
+        filter: blur(20px);
+      }
+      .bg-glow-green {
+        position: absolute;
+        width: 1100px; height: 1100px;
+        border-radius: 50%;
+        background: radial-gradient(circle, var(--green-glow) 0%, rgba(43,197,108,0) 60%);
+        pointer-events: none;
+        filter: blur(20px);
+      }
+      .scan-line {
+        position: absolute;
+        left: -10%; right: -10%;
+        height: 2px;
+        background: linear-gradient(to right, transparent 0%, var(--blue) 50%, transparent 100%);
+        opacity: 0.5;
+        pointer-events: none;
+      }
+
+      /* ============ LOGO (audio-wave glyph) ============ */
+      .logo-row {
+        display: inline-flex;
+        align-items: center;
+        gap: 36px;
+      }
+      .logo-bars {
+        display: inline-flex;
+        align-items: center;
+        gap: 14px;
+        height: 130px;
+      }
+      .logo-bars .bar {
+        width: 24px;
+        border-radius: 12px;
+        background: var(--blue);
+        transform-origin: center;
+      }
+      .logo-bars .bar.b1 { height: 64px; }
+      .logo-bars .bar.b2 { height: 112px; }
+      .logo-bars .bar.b3 { height: 56px; }
+      .logo-bars .bar.b4 { height: 96px; background: var(--green); }
+      .logo-bars.small { height: 90px; gap: 10px; }
+      .logo-bars.small .bar { width: 16px; }
+      .logo-bars.small .bar.b1 { height: 44px; }
+      .logo-bars.small .bar.b2 { height: 78px; }
+      .logo-bars.small .bar.b3 { height: 38px; }
+      .logo-bars.small .bar.b4 { height: 66px; }
+
+      .logo-text {
+        font-family: "Inter", sans-serif;
+        font-weight: 800;
+        font-size: 138px;
+        letter-spacing: -0.035em;
+        color: var(--ink);
+        line-height: 0.92;
+      }
+      .logo-text.small {
+        font-size: 96px;
+      }
+
+      /* ============ SCENE 1 — LOGO INTRO ============ */
+      #scene1 .center {
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        width: 100%;
+      }
+      .s1-tagline {
+        font-family: "Inter", sans-serif;
+        font-weight: 500;
+        font-size: 40px;
+        color: var(--blue-2);
+        letter-spacing: -0.01em;
+        margin-top: 36px;
+      }
+      .s1-rule {
+        width: 0; height: 3px;
+        background: var(--blue);
+        margin: 50px auto 30px;
+        border-radius: 2px;
+      }
+      .s1-meta {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 26px;
+        letter-spacing: 0.42em;
+        color: var(--ink-soft);
+        text-transform: uppercase;
+      }
+      .s1-url {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 24px;
+        letter-spacing: 0.28em;
+        color: var(--blue);
+        margin-top: 22px;
+      }
+
+      /* ============ SCENE 2 — FOOTAGE (CLEAN) ============ */
+      #s2-video {
+        position: absolute;
+        top: 0; left: 0;
+        width: 1920px;
+        height: 1080px;
+        object-fit: cover;
+      }
+
+      /* ============ SCENE 3 — POP-UP FACT #1 (HOOK STAT) ============ */
+      #scene3 .center {
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        width: 100%;
+      }
+      .popup-card {
+        display: inline-block;
+        position: relative;
+        padding: 80px 120px;
+        background: var(--bg-pure);
+        border-radius: 36px;
+        box-shadow: 0 30px 80px -20px rgba(26,83,240,0.16), 0 0 0 1px var(--line);
+      }
+      .popup-card::before {
+        content: "";
+        position: absolute;
+        top: 28px; left: 28px;
+        width: 14px; height: 14px;
+        border-radius: 50%;
+        background: var(--green);
+        box-shadow: 0 0 18px var(--green);
+      }
+      .popup-card .corner-tag {
+        position: absolute;
+        top: 26px; right: 36px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 16px;
+        letter-spacing: 0.32em;
+        color: var(--ink-soft);
+        text-transform: uppercase;
+      }
+      .s3-eyebrow {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 26px;
+        letter-spacing: 0.5em;
+        color: var(--ink-soft);
+        text-transform: uppercase;
+        margin-bottom: 26px;
+      }
+      .s3-num {
+        font-family: "Inter", sans-serif;
+        font-weight: 900;
+        font-size: 380px;
+        line-height: 0.86;
+        letter-spacing: -0.055em;
+        color: var(--blue);
+        font-variant-numeric: tabular-nums;
+      }
+      .s3-sub {
+        font-family: "Inter", sans-serif;
+        font-weight: 600;
+        font-size: 56px;
+        color: var(--ink);
+        margin-top: 26px;
+        letter-spacing: -0.02em;
+      }
+
+      /* ============ SCENE 4 — POP-UP FACT #2 (MATH) ============ */
+      #scene4 .center {
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        width: 100%;
+      }
+      .s4-eyebrow {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 26px;
+        letter-spacing: 0.5em;
+        color: var(--ink-soft);
+        text-transform: uppercase;
+        margin-bottom: 30px;
+      }
+      .s4-math {
+        font-family: "Inter", sans-serif;
+        font-weight: 800;
+        font-size: 130px;
+        line-height: 0.95;
+        letter-spacing: -0.03em;
+        color: var(--ink);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 32px;
+        font-variant-numeric: tabular-nums;
+      }
+      .s4-math .a { color: var(--blue); }
+      .s4-math .x { color: var(--ink-soft); font-weight: 500; font-size: 90px; }
+      .s4-math .b { color: var(--ink); }
+      .s4-math .eq { color: var(--ink-soft); font-weight: 500; font-size: 90px; }
+      .s4-math .c { color: var(--red); }
+      .s4-gone {
+        font-family: "Inter", sans-serif;
+        font-weight: 700;
+        font-size: 44px;
+        letter-spacing: 0.06em;
+        color: var(--red);
+        margin-top: 30px;
+        text-transform: uppercase;
+      }
+      .s4-meta {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 22px;
+        letter-spacing: 0.4em;
+        color: var(--ink-soft);
+        margin-top: 32px;
+        text-transform: uppercase;
+      }
+
+      /* ============ SCENE 5 — WORKFLOW (3 CARDS) ============ */
+      #scene5 .frame {
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        width: 1700px;
+        text-align: center;
+      }
+      .s5-head {
+        font-family: "Inter", sans-serif;
+        font-weight: 700;
+        font-size: 56px;
+        color: var(--ink);
+        letter-spacing: -0.02em;
+        margin-bottom: 70px;
+      }
+      .s5-head .ai { color: var(--blue); }
+      .s5-row { display: flex; justify-content: center; gap: 50px; }
+      .s5-card {
+        flex: 1;
+        max-width: 510px;
+        padding: 52px 44px 48px;
+        background: var(--bg-pure);
+        border-radius: 28px;
+        box-shadow: 0 20px 50px -16px rgba(26,83,240,0.12), 0 0 0 1px var(--line);
+        text-align: left;
+        position: relative;
+      }
+      .s5-card::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 44px; right: 44px;
+        height: 4px;
+        background: var(--blue);
+        border-radius: 0 0 4px 4px;
+      }
+      .s5-card.green::before { background: var(--green); }
+      .s5-card .step {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 20px;
+        letter-spacing: 0.4em;
+        color: var(--blue);
+      }
+      .s5-card.green .step { color: var(--green); }
+      .s5-card .verb {
+        font-family: "Inter", sans-serif;
+        font-weight: 900;
+        font-size: 88px;
+        color: var(--ink);
+        letter-spacing: -0.04em;
+        margin-top: 14px;
+        line-height: 0.95;
+      }
+      .s5-card .obj {
+        font-family: "Inter", sans-serif;
+        font-weight: 500;
+        font-size: 28px;
+        color: var(--ink-dim);
+        margin-top: 18px;
+        line-height: 1.3;
+      }
+      .s5-card .icon {
+        position: absolute;
+        top: 36px; right: 36px;
+        width: 56px; height: 56px;
+        display: flex; align-items: center; justify-content: center;
+      }
+      .s5-card .icon svg { width: 56px; height: 56px; }
+
+      /* ============ SCENE 6 — CTA ============ */
+      #scene6 .center {
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        width: 100%;
+      }
+      .s6-tag {
+        font-family: "Inter", sans-serif;
+        font-weight: 600;
+        font-size: 56px;
+        color: var(--ink);
+        letter-spacing: -0.02em;
+        max-width: 1500px;
+        margin: 40px auto 0;
+        line-height: 1.18;
+      }
+      .s6-tag .care { color: var(--blue); }
+      .s6-cta-eyebrow {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 22px;
+        letter-spacing: 0.5em;
+        color: var(--ink-soft);
+        text-transform: uppercase;
+        margin-top: 50px;
+      }
+      .s6-cta {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 36px;
+        letter-spacing: 0.22em;
+        color: var(--blue);
+        margin-top: 16px;
+        font-weight: 600;
+      }
+      .s6-cta .arrow { color: var(--green); }
+      .frame-footer {
+        position: absolute;
+        bottom: 38px; left: 90px; right: 90px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 16px;
+        letter-spacing: 0.4em;
+        color: var(--ink-soft);
+        text-transform: uppercase;
+      }
+      .frame-footer .brand { color: var(--ink); }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="ivai-commercial"
+      data-start="0"
+      data-duration="30"
+      data-width="1920"
+      data-height="1080"
+    >
+      <audio
+        id="walk-audio"
+        class="clip"
+        data-start="3"
+        data-duration="10"
+        data-track-index="0"
+        src="assets/walk-talk-audio.aac"
+        data-volume="1"
+      ></audio>
+
+      <!-- ============ SCENE 1 — LOGO INTRO (0 - 3s) ============ -->
+      <div id="scene1" class="scene">
+        <div class="bg-grid"></div>
+        <div class="bg-glow-blue" id="s1-glow1" style="top:-500px; right:-500px;"></div>
+        <div class="bg-glow-green" id="s1-glow2" style="bottom:-400px; left:-300px;"></div>
+        <div class="scan-line" id="s1-scan" style="top:35%;"></div>
+        <div class="center">
+          <div class="logo-row">
+            <div class="logo-bars">
+              <div class="bar b1" id="s1-bar1"></div>
+              <div class="bar b2" id="s1-bar2"></div>
+              <div class="bar b3" id="s1-bar3"></div>
+              <div class="bar b4" id="s1-bar4"></div>
+            </div>
+            <div class="logo-text">Intelligent Voice</div>
+          </div>
+          <div class="s1-tagline" id="s1-tag">Your AI front desk.</div>
+          <div class="s1-rule" id="s1-rule"></div>
+          <div class="s1-meta" id="s1-meta">VOICE AI · HEALTHCARE</div>
+          <div class="s1-url" id="s1-url">getivai.com</div>
+        </div>
+      </div>
+
+      <!-- ============ SCENE 2 — CLEAN FOOTAGE (3 - 13s) ============ -->
+      <div id="scene2" class="scene">
+        <video
+          id="s2-video"
+          class="clip"
+          data-start="3"
+          data-duration="10"
+          data-track-index="1"
+          src="assets/walk-talk.mp4"
+          muted
+          playsinline
+          preload="auto"
+        ></video>
+      </div>
+
+      <!-- ============ SCENE 3 — POP-UP FACT #1 (13 - 17s) ============ -->
+      <div id="scene3" class="scene">
+        <div class="bg-grid"></div>
+        <div class="bg-glow-blue" id="s3-glow" style="top:50%; left:50%; transform:translate(-50%,-50%);"></div>
+        <div class="center">
+          <div class="popup-card" id="s3-card">
+            <span class="corner-tag">FACT · 01</span>
+            <div class="s3-eyebrow">ONE NO-SHOW</div>
+            <div class="s3-num" id="s3-num">$175</div>
+            <div class="s3-sub">billable time, gone.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ SCENE 4 — POP-UP FACT #2 (17 - 21s) ============ -->
+      <div id="scene4" class="scene">
+        <div class="bg-grid"></div>
+        <div class="bg-glow-green" id="s4-glow" style="top:50%; left:50%; transform:translate(-50%,-50%);"></div>
+        <div class="center">
+          <div class="popup-card" id="s4-card" style="padding:70px 110px;">
+            <span class="corner-tag">FACT · 02</span>
+            <div class="s4-eyebrow">DO THE MATH</div>
+            <div class="s4-math">
+              <span class="a" id="s4-a">$175</span>
+              <span class="x">×</span>
+              <span class="b" id="s4-b">80 slots</span>
+              <span class="eq">=</span>
+              <span class="c" id="s4-c">$14,000</span>
+            </div>
+            <div class="s4-gone" id="s4-gone">gone every month.</div>
+            <div class="s4-meta" id="s4-meta">SOURCE · MGMA · AMA OPS BENCHMARK 2024</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ SCENE 5 — WORKFLOW (21 - 26s) ============ -->
+      <div id="scene5" class="scene">
+        <div class="bg-grid"></div>
+        <div class="bg-glow-blue" id="s5-glow" style="top:-300px; right:-200px;"></div>
+        <div class="frame">
+          <div class="s5-head" id="s5-head">What the <span class="ai">AI</span> does — automatically:</div>
+          <div class="s5-row">
+            <div class="s5-card" id="s5-c1">
+              <div class="icon"><svg viewBox="0 0 56 56" fill="none" stroke="#1A53F0" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M44 36v6a4 4 0 0 1-4.4 4 38 38 0 0 1-16.6-6 38 38 0 0 1-11.6-11.6 38 38 0 0 1-6-16.7A4 4 0 0 1 9.4 8h6a4 4 0 0 1 4 3.4c.3 2 .7 4 1.4 5.9a4 4 0 0 1-.9 4.2L17 24a32 32 0 0 0 12 12l2.5-2.9a4 4 0 0 1 4.2-.9c1.9.7 3.9 1.2 5.9 1.5A4 4 0 0 1 44 36Z"/></svg></div>
+              <div class="step">01 / OUTBOUND</div>
+              <div class="verb">Calls</div>
+              <div class="obj">every patient before their visit.</div>
+            </div>
+            <div class="s5-card" id="s5-c2">
+              <div class="icon"><svg viewBox="0 0 56 56" fill="none" stroke="#1A53F0" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M46 14 22 38l-12-12"/></svg></div>
+              <div class="step">02 / CONFIRM</div>
+              <div class="verb">Confirms</div>
+              <div class="obj">or reschedules the appointment.</div>
+            </div>
+            <div class="s5-card green" id="s5-c3">
+              <div class="icon"><svg viewBox="0 0 56 56" fill="none" stroke="#2BC56C" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="12" width="40" height="36" rx="4"/><path d="M8 22h40M18 8v8M38 8v8"/><circle cx="28" cy="36" r="6" fill="#2BC56C" stroke="none"/></svg></div>
+              <div class="step">03 / FILL</div>
+              <div class="verb">Fills</div>
+              <div class="obj">empty slots from the waitlist.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ SCENE 6 — CTA (26 - 30s) ============ -->
+      <div id="scene6" class="scene">
+        <div class="bg-grid"></div>
+        <div class="bg-glow-blue" id="s6-glow1" style="top:50%; left:50%; transform:translate(-50%,-50%);"></div>
+        <div class="center">
+          <div class="logo-row">
+            <div class="logo-bars small">
+              <div class="bar b1" id="s6-bar1"></div>
+              <div class="bar b2" id="s6-bar2"></div>
+              <div class="bar b3" id="s6-bar3"></div>
+              <div class="bar b4" id="s6-bar4"></div>
+            </div>
+            <div class="logo-text small">Intelligent Voice</div>
+          </div>
+          <div class="s6-tag" id="s6-tag">Your front desk handles the <span class="care">care</span> — not the phone calls.</div>
+          <div class="s6-cta-eyebrow" id="s6-cta-eb">SEE IT IN ACTION</div>
+          <div class="s6-cta" id="s6-cta"><span class="arrow">→</span> getivai.com/healthcare</div>
+        </div>
+        <div class="frame-footer">
+          <div class="brand">INTELLIGENT VOICE AI</div>
+          <div>HEALTHCARE · DENTAL · PRIMARY CARE</div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      window.__timelines["ivai-commercial"] = tl;
+
+      // ====== SCENE 1 (0-3s) LOGO INTRO ======
+      tl.to("#scene1", { opacity: 1, duration: 0.5, ease: "power2.out" }, 0);
+      // Bars animate in with a wave
+      tl.from(["#s1-bar1","#s1-bar2","#s1-bar3","#s1-bar4"], {
+        scaleY: 0, opacity: 0, duration: 0.55, ease: "back.out(1.7)", stagger: 0.08, transformOrigin: "center"
+      }, 0.3);
+      // Subtle pulse on bars (audio-wave feel)
+      tl.to("#s1-bar1", { scaleY: 1.25, duration: 0.4, yoyo: true, repeat: 3, ease: "sine.inOut" }, 0.9);
+      tl.to("#s1-bar2", { scaleY: 0.85, duration: 0.45, yoyo: true, repeat: 3, ease: "sine.inOut" }, 0.95);
+      tl.to("#s1-bar3", { scaleY: 1.35, duration: 0.4, yoyo: true, repeat: 3, ease: "sine.inOut" }, 1.0);
+      tl.to("#s1-bar4", { scaleY: 0.9, duration: 0.45, yoyo: true, repeat: 3, ease: "sine.inOut" }, 1.05);
+      tl.from(".logo-text", { x: -30, opacity: 0, duration: 0.7, ease: "power3.out" }, 0.55);
+      tl.from("#s1-tag", { y: 16, opacity: 0, duration: 0.6, ease: "power3.out" }, 1.0);
+      tl.to("#s1-rule", { width: 400, duration: 0.6, ease: "power2.out" }, 1.25);
+      tl.from("#s1-meta", { y: 14, opacity: 0, duration: 0.5, ease: "power3.out" }, 1.45);
+      tl.from("#s1-url", { y: 12, opacity: 0, duration: 0.45, ease: "power2.out" }, 1.7);
+      // scan line drift
+      tl.fromTo("#s1-scan", { top: "20%", opacity: 0 }, { top: "80%", opacity: 0.6, duration: 2.8, ease: "none" }, 0.1);
+
+      // Cross-fade scene1 -> scene2 (footage). 0.6s ending at 3.0
+      tl.to("#scene1", { opacity: 0, duration: 0.6, ease: "power2.inOut" }, 2.4);
+      tl.to("#scene2", { opacity: 1, duration: 0.6, ease: "power2.inOut" }, 2.4);
+
+      // ====== SCENE 2 (3-13s) CLEAN FOOTAGE - no overlays ======
+      tl.to("#scene2", { opacity: 0, duration: 0.6, ease: "power2.inOut" }, 12.4);
+      tl.to("#scene3", { opacity: 1, duration: 0.6, ease: "power2.inOut" }, 12.4);
+
+      // ====== SCENE 3 (13-17s) POP-UP FACT #1: $175 ======
+      tl.from("#s3-card", { y: 60, scale: 0.92, opacity: 0, duration: 0.7, ease: "back.out(1.4)" }, 13.1);
+      tl.from("#s3-num", { scale: 0.55, opacity: 0, duration: 0.85, ease: "back.out(1.6)" }, 13.5);
+      tl.from(".s3-sub", { y: 20, opacity: 0, duration: 0.55, ease: "power3.out" }, 14.3);
+
+      tl.to("#scene3", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 16.5);
+      tl.to("#scene4", { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 16.5);
+
+      // ====== SCENE 4 (17-21s) POP-UP FACT #2: MATH ======
+      tl.from("#s4-card", { y: 60, scale: 0.92, opacity: 0, duration: 0.7, ease: "back.out(1.4)" }, 17.1);
+      tl.from("#s4-a", { y: 30, opacity: 0, duration: 0.4, ease: "power3.out" }, 17.5);
+      tl.from(".s4-math .x", { opacity: 0, duration: 0.3 }, 17.75);
+      tl.from("#s4-b", { y: 30, opacity: 0, duration: 0.4, ease: "power3.out" }, 17.9);
+      tl.from(".s4-math .eq", { opacity: 0, duration: 0.3 }, 18.15);
+      tl.from("#s4-c", { y: 30, scale: 0.7, opacity: 0, duration: 0.55, ease: "back.out(1.6)" }, 18.3);
+      tl.from("#s4-gone", { y: 14, opacity: 0, duration: 0.45, ease: "power2.out" }, 18.9);
+      tl.from("#s4-meta", { y: 10, opacity: 0, duration: 0.4, ease: "power2.out" }, 19.2);
+
+      tl.to("#scene4", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 20.5);
+      tl.to("#scene5", { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 20.5);
+
+      // ====== SCENE 5 (21-26s) WORKFLOW ======
+      tl.from("#s5-head", { y: 30, opacity: 0, duration: 0.55, ease: "power3.out" }, 21.2);
+      tl.from("#s5-c1", { y: 50, opacity: 0, duration: 0.55, ease: "back.out(1.3)" }, 21.55);
+      tl.from("#s5-c2", { y: 50, opacity: 0, duration: 0.55, ease: "back.out(1.3)" }, 21.8);
+      tl.from("#s5-c3", { y: 50, opacity: 0, duration: 0.55, ease: "back.out(1.3)" }, 22.05);
+
+      tl.to("#scene5", { opacity: 0, duration: 0.55, ease: "power2.inOut" }, 25.45);
+      tl.to("#scene6", { opacity: 1, duration: 0.55, ease: "power2.inOut" }, 25.45);
+
+      // ====== SCENE 6 (26-30s) CTA ======
+      tl.from(["#s6-bar1","#s6-bar2","#s6-bar3","#s6-bar4"], {
+        scaleY: 0, opacity: 0, duration: 0.5, ease: "back.out(1.7)", stagger: 0.07, transformOrigin: "center"
+      }, 26.0);
+      tl.from(".s6-card-text, #scene6 .logo-text", { x: -20, opacity: 0, duration: 0.55, ease: "power3.out" }, 26.2);
+      tl.from("#s6-tag", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 26.55);
+      tl.from("#s6-cta-eb", { y: 12, opacity: 0, duration: 0.45, ease: "power2.out" }, 27.0);
+      tl.from("#s6-cta", { y: 14, opacity: 0, duration: 0.5, ease: "power3.out" }, 27.2);
+    </script>
+  </body>
+</html>
